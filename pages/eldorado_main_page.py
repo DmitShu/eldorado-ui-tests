@@ -20,17 +20,22 @@ class MainPage(WebPage):
 
     # Header elements:
 
+    # Выберите ваш город
+    header_city_select = WebElement(css_selector = "div.ea > button[type = 'button']")
+                                # xpath = "(//button[@type='button' and @class='jj'])"
+    region_input = WebElement(css_selector = "input[name = 'region-search']")
+
     # "Эльдорадости"
     header_club_url = '/club/'
-    header_club = WebElement(xpath="//a[@href='"+header_club_url+"']")
+    header_club = WebElement(xpath = "//a[@href='"+header_club_url+"']")
 
     # "Магазины"
     header_shops_url = '/info/shops/'
-    header_shops = WebElement(xpath="//a[@href='"+header_shops_url+"']")
+    header_shops = WebElement(xpath = "//a[@href='"+header_shops_url+"']")
 
     # "Пункты выдачи"
     header_pvz_url = '/info/pvz/11324/'
-    header_pvz = WebElement(xpath="//a[@href='"+header_pvz_url+"']")
+    header_pvz = WebElement(xpath = "//a[@href='"+header_pvz_url+"']")
 
 
 

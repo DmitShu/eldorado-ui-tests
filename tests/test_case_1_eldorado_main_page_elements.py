@@ -27,6 +27,17 @@ from pages.variables import *
 import time
 
 
+def test_click_city_select(web_browser):
+    """ Check header element "Выберите ваш город" opens city select form """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_city_select.click()
+    page.wait_page_loaded()
+
+    assert page.region_input.is_visible(), "No city select form"
+
+
 def test_click_header_club(web_browser):
     """ Check header element "Эльдорадости" opens in new tab """
 

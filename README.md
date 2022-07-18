@@ -18,7 +18,7 @@ of the page in case any test case will fail.
 
 [pages/variables.py](pages/variables.py) contains variables for tests
 
-[tests/test_auth_page.py](tests/test_pf_auth_page.py) contains several Web UI tests for https://petfriends.skillfactory.ru/
+[tests/....py](tests/test_pf_auth_page.py) contains several Web UI tests for ...
 
 
 How To Run Tests
