@@ -21,24 +21,61 @@ class MainPage(WebPage):
     # Header elements:
 
     # Выберите ваш город
-    header_city_select = WebElement(css_selector = "div.ea > button[type = 'button']")
-                                # xpath = "(//button[@type='button' and @class='jj'])"
+    header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
+
 
     # "Эльдорадости"
     header_club_url = '/club/'
     header_club = WebElement(xpath = "//a[@href='"+header_club_url+"']")
 
+
     # "Магазины"
     header_shops_url = '/info/shops/'
     header_shops = WebElement(xpath = "//a[@href='"+header_shops_url+"']")
+
 
     # "Пункты выдачи"
     header_pvz_url = '/info/pvz/11324/'
     header_pvz = WebElement(xpath = "//a[@href='"+header_pvz_url+"']")
 
 
+    # "Статус заказа"
+    header_orders_url = '/personal/orders/'
+    header_orders = WebElement(xpath = "//a[@href='"+header_orders_url+"']")
+    # "Статус заказа" form elements
+    orders_form_submit_button = WebElement(css_selector = 'form > button[type="submit"]')
 
+
+    # "Эльдоблог"
+    header_blog_url = 'https://blog.eldorado.ru/'
+    header_blog = WebElement(xpath = "//a[@href='"+header_blog_url+"']")
+
+
+    # "Для бизнеса"
+    header_b2b_url = '/b2b/'
+    header_b2b = WebElement(xpath = "//a[@href='"+header_b2b_url+"']")
+
+
+    # "Открыть онлайн-консультант"
+    header_chat_button = WebElement(css_selector = '#__next button[aria-label="Открыть онлайн-консультант"]')
+
+    # "chat elements"
+    chat_viber_button = WebElement(css_selector = '#__next a[href="viber://pa/?chatURI=eldorado_stores"]')
+    chat_telegram_button = WebElement(css_selector = '#__next a[href="https://t.me/Eldorado_official_bot"]')
+
+
+    # "Регистрация или вход"
+    header_login_button = WebElement(xpath = "(//BUTTON[contains(text(), 'Вход')])[1]")
+
+    # "login form"
+    login_tel_input = WebElement(css_selector = 'input[inputmode="tel"]')
+    login_submit_button = WebElement(xpath = "//button[normalize-space(.)='Получить код']")
+
+
+    # "Корзина
+    header_basket_url = '/personal/basket.php'
+    header_basket_button = WebElement(xpath = "//a[@href='"+header_basket_url+"']")
 
 
 

@@ -83,6 +83,79 @@ def test_click_header_pvz(web_browser):
     assert MainPage.header_pvz_url in page.get_current_url(), "Wrong URL"
 
 
+def test_click_header_orders(web_browser):
+    """ Check header element "Статус заказа" opens new form """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_orders.click()
+    page.wait_page_loaded()
+
+    assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
+
+
+def test_click_header_blog(web_browser):
+    """ Check header element "Эльдоблог" opens in new tab """
+
+    page = MainPage(web_browser)
+    page.header_blog.click()
+    page.wait_page_loaded()
+
+    assert MainPage.header_blog_url not in page.get_current_url(), "Same tab"
+
+    page.switch_tab()
+    page.wait_page_loaded()
+
+    assert MainPage.header_blog_url in page.get_current_url(), "Wrong URL"
+
+
+def test_click_header_b2b(web_browser):
+    """ Check header element "Для бизнеса" opens in new tab """
+
+    page = MainPage(web_browser)
+    page.header_b2b.click()
+    page.wait_page_loaded()
+
+    assert MainPage.header_b2b_url not in page.get_current_url(), "Same tab"
+
+    page.switch_tab()
+    page.wait_page_loaded()
+
+    assert MainPage.header_b2b_url in page.get_current_url(), "Wrong URL"
+
+
+def test_click_header_chat(web_browser):
+    """ Check header element "Открыть онлайн-консультант" shows links to social """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_chat_button.click()
+
+    assert page.chat_viber_button.wait_to_be_clickable(1), "No viber link"
+    assert page.chat_telegram_button.wait_to_be_clickable(1), "No telegram link"
+
+
+def test_click_header_login(web_browser):
+    """ Check header element "Регистрация или вход" shows login form """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_login_button.click()
+
+    assert page.login_tel_input.wait_to_be_clickable(1), "No tel field"
+    assert page.login_submit_button.wait_to_be_clickable(1), "No submit button"
+
+
+def test_click_header_basket(web_browser):
+    """ Check header element "Корзина" opens basket page """
+
+    page = MainPage(web_browser)
+    page.header_basket_button.click()
+    page.wait_page_loaded()
+
+    assert MainPage.header_basket_url in page.get_current_url(), "Not a basket page"
+
+
 # @pytest.mark.parametrize("filter", [255,
 #                                     1001,
 #                                     123,
