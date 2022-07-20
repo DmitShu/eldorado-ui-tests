@@ -1,5 +1,5 @@
 """
-These tests check the presence of elements on the main page and the correctness of the links.
+These tests check the presence and functions of elements on the main page header.
 
 How To Run Tests
 ----------------
@@ -27,15 +27,38 @@ from pages.variables import *
 import time
 
 
-def test_click_city_select(web_browser):
-    """ Check header element "Выберите ваш город" opens city select form """
+def test_city_select_positive(web_browser):
+    """ Check header element "Выберите ваш город" with real city """
 
     page = MainPage(web_browser)
     page.scroll_up()
     page.header_city_select.click()
+    page.region_input.wait_to_be_clickable(5)
+
+    assert page.region_input.is_visible(), "City select form not visible"
+
+    page.region_input.send_keys(city_p_1, 0.5)
+    page.region_option.click()
     page.wait_page_loaded()
 
-    assert page.region_input.is_visible(), "No city select form"
+    assert city_p_1 in page.header_city_select.get_text(), "City was not selected"
+
+
+def test_city_select_negative(web_browser):
+    """ Check header element "Выберите ваш город" with bad data """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_city_select.click()
+    page.region_input.wait_to_be_clickable(5)
+
+    assert page.region_input.is_visible(), "City select form not visible"
+
+    page.region_input.send_keys(city_n_1, 0.5)
+    page.region_option.click()
+    page.wait_page_loaded()
+
+    assert city_bad_message in page.region_option.get_text(), "Now invalid input message"
 
 
 def test_click_header_club(web_browser):

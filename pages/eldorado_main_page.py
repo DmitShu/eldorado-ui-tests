@@ -23,6 +23,7 @@ class MainPage(WebPage):
     # Выберите ваш город
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
+    region_option = WebElement(css_selector = "div[role='listbox'] span")
 
 
     # "Эльдорадости"
