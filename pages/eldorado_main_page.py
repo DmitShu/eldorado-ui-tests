@@ -24,7 +24,7 @@ class MainPage(WebPage):
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
-
+    region_city_buttons = ManyWebElements(css_selector = "div[role='dialog'] span[role='button']")
 
     # "Эльдорадости"
     header_club_url = '/club/'

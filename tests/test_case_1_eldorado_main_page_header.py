@@ -24,11 +24,12 @@ How To Run Tests
 
 from pages.eldorado_main_page import MainPage
 from pages.variables import *
+import random as r
 import time
 
 
-def test_city_select_positive(web_browser):
-    """ Check header element "Выберите ваш город" with real city """
+def test_city_select_input_positive(web_browser):
+    """ Check header element "Выберите ваш город", input real city """
 
     page = MainPage(web_browser)
     page.scroll_up()
@@ -44,8 +45,8 @@ def test_city_select_positive(web_browser):
     assert city_p_1 in page.header_city_select.get_text(), "City was not selected"
 
 
-def test_city_select_negative(web_browser):
-    """ Check header element "Выберите ваш город" with bad data """
+def test_city_select_input_negative(web_browser):
+    """ Check header element "Выберите ваш город", input bad data """
 
     page = MainPage(web_browser)
     page.scroll_up()
@@ -59,6 +60,25 @@ def test_city_select_negative(web_browser):
     page.wait_page_loaded()
 
     assert city_bad_message in page.region_option.get_text(), "Now invalid input message"
+
+
+def test_city_select_by_button(web_browser):
+    """ Check header element "Выберите ваш город", select city button """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_city_select.click()
+    page.region_input.wait_to_be_clickable(5)
+
+    assert page.region_input.is_visible(), "City select form not visible"
+
+    # Select and click random button
+    cty_tst_btn = r.choice(page.region_city_buttons.find())
+    cty_tst_btn_txt = cty_tst_btn.text
+    cty_tst_btn.click()
+    page.wait_page_loaded()
+
+    assert cty_tst_btn_txt in page.header_city_select.get_text(), "City was not selected"
 
 
 def test_click_header_club(web_browser):
