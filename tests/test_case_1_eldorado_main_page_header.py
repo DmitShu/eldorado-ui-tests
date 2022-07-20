@@ -127,14 +127,22 @@ def test_click_header_pvz(web_browser):
 
 
 def test_click_header_orders(web_browser):
-    """ Check header element "Статус заказа" opens new form """
+    """ Check header element "Статус заказа", click, empty fields """
 
     page = MainPage(web_browser)
     page.scroll_up()
     page.header_orders.click()
-    page.wait_page_loaded()
+    page.orders_form_submit_button.wait_to_be_clickable()
 
     assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
+
+    page.orders_form_submit_button.click()
+    messages = page.orders_form_messages.get_text()
+
+    assert order_tel_empty in messages, 'No "'+order_tel_empty+'" on form'
+    assert order_empty_msg in messages, 'No "'+order_empty_msg+'" on form'
+
+
 
 
 def test_click_header_blog(web_browser):

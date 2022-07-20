@@ -26,6 +26,7 @@ class MainPage(WebPage):
     region_option = WebElement(css_selector = "div[role='listbox'] span")
     region_city_buttons = ManyWebElements(css_selector = "div[role='dialog'] span[role='button']")
 
+
     # "Эльдорадости"
     header_club_url = '/club/'
     header_club = WebElement(xpath = "//a[@href='"+header_club_url+"']")
@@ -46,6 +47,7 @@ class MainPage(WebPage):
     header_orders = WebElement(xpath = "//a[@href='"+header_orders_url+"']")
     # "Статус заказа" form elements
     orders_form_submit_button = WebElement(css_selector = 'form > button[type="submit"]')
+    orders_form_messages = ManyWebElements(css_selector = 'div[role="dialog"] form div span')
 
 
     # "Эльдоблог"
