@@ -76,23 +76,8 @@ class MainPage(WebPage):
     login_submit_button = WebElement(xpath = "//button[normalize-space(.)='Получить код']")
 
 
-    # "Корзина
+    # "Корзина"
     header_basket_url = '/personal/basket.php'
     header_basket_button = WebElement(xpath = "//a[@href='"+header_basket_url+"']")
 
 
-
-
-
-    # Search button
-    search_run_button = WebElement(xpath='//button[@type="submit"]')
-
-    # Titles of the products in search results
-    products_titles = ManyWebElements(xpath='//a[contains(@href, "/product-") and @title!=""]')
-
-    # Button to sort products by price
-    sort_products_by_price = WebElement(css_selector='button[data-autotest-id="dprice"]')
-
-    # Prices of the products in search results
-    products_prices = ManyWebElements(xpath='//div[@class="_3NaXx _33ZFz _2m5MZ"]//span/*[1]')
-#     (xpath='//div[@data-zone-name="price"]//span/*[1]')
