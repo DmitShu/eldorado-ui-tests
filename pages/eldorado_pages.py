@@ -2,8 +2,7 @@
 main page
 "Эльдорадо"
 """
-import os
-
+import os, pickle
 from pages.base import WebPage
 from pages.elements import WebElement
 from pages.elements import ManyWebElements
@@ -18,47 +17,49 @@ class MainPage(WebPage):
 
         super().__init__(web_driver, url)
 
+        # load cookies, if possible
+        try:
+            with open('test_cookies.tmp', 'rb') as cookiesfile:
+                cookies = pickle.load(cookiesfile)
+                for cookie in cookies:
+                    web_driver.add_cookie(cookie)
+                web_driver.refresh();
+
+        except:
+            pass
+
+
     # Header elements:
 
-    # Выберите ваш город
+    # "Выберите ваш город"
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
     region_city_buttons = ManyWebElements(css_selector = "div[role='dialog'] span[role='button']")
 
-
     # "Эльдорадости"
-    header_club_url = '/club/'
-    header_club = WebElement(xpath = "//a[@href='"+header_club_url+"']")
-
+    header_club = WebElement(xpath = "//a[@href='"+club_url+"']")
 
     # "Магазины"
-    header_shops_url = '/info/shops/'
-    header_shops = WebElement(xpath = "//a[@href='"+header_shops_url+"']")
-
+    header_shops = WebElement(xpath = "//a[@href='"+shops_url+"']")
 
     # "Пункты выдачи"
-    header_pvz_url = '/info/pvz/11324/'
-    header_pvz = WebElement(xpath = "//a[@href='"+header_pvz_url+"']")
-
+    header_pvz = WebElement(xpath = "//a[@href='"+pvz_url+"']")
 
     # "Статус заказа"
-    header_orders_url = '/personal/orders/'
-    header_orders = WebElement(xpath = "//a[@href='"+header_orders_url+"']")
+    header_orders = WebElement(xpath = "//a[@href='"+orders_url+"']")
+
     # "Статус заказа" form elements
+    orders_form_input_order = WebElement(css_selector = 'form input[name="name"]')
+    orders_form_input_phone = WebElement(css_selector = 'form div:nth-child(3) input')
     orders_form_submit_button = WebElement(css_selector = 'form > button[type="submit"]')
     orders_form_messages = ManyWebElements(css_selector = 'div[role="dialog"] form div span')
 
-
     # "Эльдоблог"
-    header_blog_url = 'https://blog.eldorado.ru/'
-    header_blog = WebElement(xpath = "//a[@href='"+header_blog_url+"']")
-
+    header_blog = WebElement(xpath = "//a[@href='"+blog_url+"']")
 
     # "Для бизнеса"
-    header_b2b_url = '/b2b/'
-    header_b2b = WebElement(xpath = "//a[@href='"+header_b2b_url+"']")
-
+    header_b2b = WebElement(xpath = "//a[@href='"+b2b_url+"']")
 
     # "Открыть онлайн-консультант"
     header_chat_button = WebElement(css_selector = '#__next button[aria-label="Открыть онлайн-консультант"]')
@@ -67,7 +68,6 @@ class MainPage(WebPage):
     chat_viber_button = WebElement(css_selector = '#__next a[href="viber://pa/?chatURI=eldorado_stores"]')
     chat_telegram_button = WebElement(css_selector = '#__next a[href="https://t.me/Eldorado_official_bot"]')
 
-
     # "Регистрация или вход"
     header_login_button = WebElement(xpath = "(//BUTTON[contains(text(), 'Вход')])[1]")
 
@@ -75,9 +75,31 @@ class MainPage(WebPage):
     login_tel_input = WebElement(css_selector = 'input[inputmode="tel"]')
     login_submit_button = WebElement(xpath = "//button[normalize-space(.)='Получить код']")
 
+    # Search-form
+    header_search_input = WebElement(css_selector = 'input[name="search"]')
 
     # "Корзина"
-    header_basket_url = '/personal/basket.php'
-    header_basket_button = WebElement(xpath = "//a[@href='"+header_basket_url+"']")
+    header_basket_button = WebElement(xpath = "//a[@href='"+basket_url+"']")
 
 
+class BasketPage(WebPage):
+
+    def __init__(self, web_driver, url=''):
+        if not url:
+            url = main_url+basket_url
+
+        super().__init__(web_driver, url)
+
+        # load cookies, if possible
+        try:
+            with open('test_cookies.tmp', 'rb') as cookiesfile:
+                cookies = pickle.load(cookiesfile)
+                for cookie in cookies:
+                    web_driver.add_cookie(cookie)
+                web_driver.refresh();
+
+        except:
+            pass
+
+
+    # Header elements:

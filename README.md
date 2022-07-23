@@ -18,7 +18,7 @@ of the page in case any test case will fail.
 
 [pages/variables.py](pages/variables.py) contains variables for tests
 
-[tests/....py](tests/test_pf_auth_page.py) contains several Web UI tests for ...
+[tests/test_run_1_main_page_header.py](tests/test_run_1_main_page_header.py) contains several Web UI tests for main page header elements and forms...
 
 
 How To Run Tests
@@ -39,5 +39,3 @@ How To Run Tests
     ```bash
     python -m pytest -v tests/
     ```
-
-   ![alt text](example.png)

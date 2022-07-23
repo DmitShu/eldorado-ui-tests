@@ -1,5 +1,5 @@
 """
-These tests check the presence and functions of elements on the main page header.
+These test cases check the presence and functions of elements on the main page header and forms.
 
 How To Run Tests
 ----------------
@@ -22,9 +22,10 @@ How To Run Tests
 
 """
 
-from pages.eldorado_main_page import MainPage
+from pages.eldorado_pages import MainPage
 from pages.variables import *
 import random as r
+import pytest
 import time
 
 
@@ -88,12 +89,12 @@ def test_click_header_club(web_browser):
     page.header_club.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_club_url not in page.get_current_url(), "Same tab"
+    assert club_url not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert MainPage.header_club_url in page.get_current_url(), "Wrong URL"
+    assert club_url in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_shops(web_browser):
@@ -103,12 +104,12 @@ def test_click_header_shops(web_browser):
     page.header_shops.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_shops_url not in page.get_current_url(), "Same tab"
+    assert shops_url not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert MainPage.header_shops_url in page.get_current_url(), "Wrong URL"
+    assert shops_url in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_pvz(web_browser):
@@ -118,15 +119,33 @@ def test_click_header_pvz(web_browser):
     page.header_pvz.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_pvz_url not in page.get_current_url(), "Same tab"
+    assert pvz_url not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert MainPage.header_pvz_url in page.get_current_url(), "Wrong URL"
+    assert pvz_url in page.get_current_url(), "Wrong URL"
+
+@pytest.mark.skip(reason="Valid order num + phone needed")
+def test_click_header_orders_valid_data(web_browser):
+    """ Check header element "Статус заказа", click, valid data """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_orders.click()
+    page.orders_form_submit_button.wait_to_be_clickable()
+
+    assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
+
+    page.orders_form_input_order = order_p_1
+    page.orders_form_input_phone = order_tel_p_1
+    page.orders_form_submit_button.click()
+    messages = page.orders_form_messages.get_text()
+
+    assert order_tel_bad_message not in messages, order_tel_bad_message+'" on form'
 
 
-def test_click_header_orders(web_browser):
+def test_click_header_orders_empty_fields(web_browser):
     """ Check header element "Статус заказа", click, empty fields """
 
     page = MainPage(web_browser)
@@ -143,6 +162,22 @@ def test_click_header_orders(web_browser):
     assert order_empty_msg in messages, 'No "'+order_empty_msg+'" on form'
 
 
+def test_click_header_orders_invalid_phone(web_browser):
+    """ Check header element "Статус заказа", click, invalid phone """
+
+    page = MainPage(web_browser)
+    page.scroll_up()
+    page.header_orders.click()
+    page.orders_form_submit_button.wait_to_be_clickable()
+
+    assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
+
+    page.orders_form_input_order = order_p_1
+    page.orders_form_input_phone = order_tel_n_1
+    page.orders_form_submit_button.click()
+    messages = page.orders_form_messages.get_text()
+
+    assert order_tel_bad_message in messages, 'No "'+order_tel_bad_message+'" on form'
 
 
 def test_click_header_blog(web_browser):
@@ -152,12 +187,12 @@ def test_click_header_blog(web_browser):
     page.header_blog.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_blog_url not in page.get_current_url(), "Same tab"
+    assert blog_url not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert MainPage.header_blog_url in page.get_current_url(), "Wrong URL"
+    assert blog_url in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_b2b(web_browser):
@@ -167,12 +202,12 @@ def test_click_header_b2b(web_browser):
     page.header_b2b.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_b2b_url not in page.get_current_url(), "Same tab"
+    assert b2b_url not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert MainPage.header_b2b_url in page.get_current_url(), "Wrong URL"
+    assert b2b_url in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_chat(web_browser):
@@ -204,4 +239,4 @@ def test_click_header_basket(web_browser):
     page.header_basket_button.click()
     page.wait_page_loaded()
 
-    assert MainPage.header_basket_url in page.get_current_url(), "Not a basket page"
+    assert basket_url in page.get_current_url(), "Not a basket page"
