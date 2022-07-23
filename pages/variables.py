@@ -27,6 +27,6 @@ order_empty_msg = 'Введите номер заказа'
 
 
 # Search
-search_item_1 = 'холодильник'
-search_item_2 = 'утюг'
-search_item_3 = 'наушники'
+search_item_1 = 'Холодильники'
+search_item_2 = 'Утюги'
+

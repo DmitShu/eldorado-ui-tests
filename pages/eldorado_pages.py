@@ -17,21 +17,15 @@ class MainPage(WebPage):
 
         super().__init__(web_driver, url)
 
-        # load cookies, if possible
-        try:
-            with open('test_cookies.tmp', 'rb') as cookiesfile:
-                cookies = pickle.load(cookiesfile)
-                for cookie in cookies:
-                    web_driver.add_cookie(cookie)
-                web_driver.refresh();
-
-        except:
-            pass
+    def save_cookies(self):
+        with open('test_cookies.tmp', 'wb') as cookies:
+            pickle.dump(self._web_driver.get_cookies(), cookies)
 
 
     # Header elements:
 
     # "Выберите ваш город"
+    header_city_popup = WebElement(xpath = "//button[normalize-space(.)='Да, верно']")
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
@@ -77,9 +71,17 @@ class MainPage(WebPage):
 
     # Search-form
     header_search_input = WebElement(css_selector = 'input[name="search"]')
+    header_search_item_1 = WebElement(xpath = "//a[normalize-space(.)='"+search_item_1+"']")
+    header_search_item_2 = WebElement(xpath = "//a[normalize-space(.)='"+search_item_2+"']")
+
 
     # "Корзина"
     header_basket_button = WebElement(xpath = "//a[@href='"+basket_url+"']")
+    cart_counter = WebElement(xpath = "//span[@data-dy='header-cart-counter']")
+    cart_total = WebElement(xpath = "//span[@data-dy='header-cart-counter']/..")
+
+    add_to_cart_button = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
+    add_to_cart_price = WebElement(css_selector = 'span[data-pc="offer_price"]')
 
 
 class BasketPage(WebPage):
