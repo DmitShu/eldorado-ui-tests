@@ -33,7 +33,6 @@ def test_city_select_input_positive(web_browser):
     """ Check header element "Выберите ваш город", input real city """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_city_select.click()
     page.region_input.wait_to_be_clickable(5)
 
@@ -50,7 +49,6 @@ def test_city_select_input_negative(web_browser):
     """ Check header element "Выберите ваш город", input bad data """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_city_select.click()
     page.region_input.wait_to_be_clickable(5)
 
@@ -67,7 +65,6 @@ def test_city_select_by_button(web_browser):
     """ Check header element "Выберите ваш город", select city button """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_city_select.click()
     page.region_input.wait_to_be_clickable(5)
 
@@ -78,6 +75,7 @@ def test_city_select_by_button(web_browser):
     cty_tst_btn_txt = cty_tst_btn.text
     cty_tst_btn.click()
     page.wait_page_loaded()
+    page.header_city_select.wait_to_be_clickable()
 
     assert cty_tst_btn_txt in page.header_city_select.get_text(), "City was not selected"
 
@@ -131,7 +129,6 @@ def test_click_header_orders_valid_data(web_browser):
     """ Check header element "Статус заказа", click, valid data """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_orders.click()
     page.orders_form_submit_button.wait_to_be_clickable()
 
@@ -149,7 +146,6 @@ def test_click_header_orders_empty_fields(web_browser):
     """ Check header element "Статус заказа", click, empty fields """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_orders.click()
     page.orders_form_submit_button.wait_to_be_clickable()
 
@@ -166,7 +162,6 @@ def test_click_header_orders_invalid_phone(web_browser):
     """ Check header element "Статус заказа", click, invalid phone """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_orders.click()
     page.orders_form_submit_button.wait_to_be_clickable()
 
@@ -214,7 +209,6 @@ def test_click_header_chat(web_browser):
     """ Check header element "Открыть онлайн-консультант" shows links to social """
 
     page = MainPage(web_browser)
-    page.scroll_up()
     page.header_chat_button.click()
 
     assert page.chat_viber_button.wait_to_be_clickable(1), "No viber link"

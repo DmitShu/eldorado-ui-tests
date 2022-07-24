@@ -24,7 +24,6 @@ How To Run Tests
 
 from pages.eldorado_pages import *
 from pages.variables import *
-import pickle
 import random as r
 import pytest
 import time
@@ -33,7 +32,7 @@ preconditions = True
 
 
 def test_basket_add_several_items(web_browser):
-    """ Add several items to basket """
+    """ Check base functionality. Add several items to basket """
 
     page = MainPage(web_browser)
     if page.header_city_popup.is_clickable():
@@ -75,9 +74,22 @@ def test_basket_add_several_items(web_browser):
     assert cart_counter == 2, f'{cart_counter} in basket, but 2 expected'
     assert cart_total == price_total, f'{cart_total} in basket, but {price_total} expected'
 
+    page.header_basket_button.click()
+    page.wait_page_loaded()
+
+    assert cart_counter == 2, f'{cart_counter} in basket, but 2 expected'
+    assert cart_total == price_total, f'{cart_total} in basket, but {price_total} expected'
+
+    # checking result in basket page
+    page.header_basket_button.click()
+    page.wait_page_loaded()
+    bb_count = (float(page.bb_count.get_text()))
+    bb_cost = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+
+    assert bb_count == 2, f'{bb_count} in basket, but 2 expected'
+    assert price_total == bb_cost, f'{bb_cost} in basket, but {price_total} expected'
+
     # saving cookies for next test cases if pass
-    # with open('test_cookies.tmp', 'wb') as cookies:
-    #     pickle.dump(web_browser.get_cookies(), cookies)
     page.save_cookies()
     # If this test fails, we block the execution of the rest.
     # (The following require an item in the cart)
@@ -90,8 +102,22 @@ def prec_met():
     assert preconditions, "Precondition not met"
 
 
-def test_basket_count_items(prec_met, web_browser):
-    """ Add several basket """
+def test_basket_delete_items(prec_met, web_browser):
+    """ Removing items from basket """
 
     page = BasketPage(web_browser)
-    page.scroll_up()
+    page.load_cookies()
+    # removing first item
+    page.basket_block_close_button.click()
+    page.wait_page_loaded()
+    # checking remaining items number and price
+    bb_count = (float(page.bb_count.get_text()))
+    bb_cost = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+    item_cost = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+
+    assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
+    assert item_cost == bb_cost, f'{bb_cost} in basket, but {item_cost} expected'
+
+    # removing last item
+    page.basket_block_close_button.click()
+

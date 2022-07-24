@@ -2,7 +2,7 @@
 main page
 "Эльдорадо"
 """
-import os, pickle
+
 from pages.base import WebPage
 from pages.elements import WebElement
 from pages.elements import ManyWebElements
@@ -17,12 +17,6 @@ class MainPage(WebPage):
 
         super().__init__(web_driver, url)
 
-    def save_cookies(self):
-        with open('test_cookies.tmp', 'wb') as cookies:
-            pickle.dump(self._web_driver.get_cookies(), cookies)
-
-
-    # Header elements:
 
     # "Выберите ваш город"
     header_city_popup = WebElement(xpath = "//button[normalize-space(.)='Да, верно']")
@@ -83,6 +77,10 @@ class MainPage(WebPage):
     add_to_cart_button = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
     add_to_cart_price = WebElement(css_selector = 'span[data-pc="offer_price"]')
 
+    # Basket button elements
+    bb_count = WebElement(css_selector = 'span[id="basketCount"]')
+    bb_cost = WebElement(css_selector = 'span[id="basketCost"]')
+
 
 class BasketPage(WebPage):
 
@@ -92,16 +90,12 @@ class BasketPage(WebPage):
 
         super().__init__(web_driver, url)
 
-        # load cookies, if possible
-        try:
-            with open('test_cookies.tmp', 'rb') as cookiesfile:
-                cookies = pickle.load(cookiesfile)
-                for cookie in cookies:
-                    web_driver.add_cookie(cookie)
-                web_driver.refresh();
 
-        except:
-            pass
+    # Basket button elements
+    bb_count = WebElement(css_selector = 'span[id="basketCount"]')
+    bb_cost = WebElement(css_selector = 'span[id="basketCost"]')
 
+    # basket container items
+    basket_block_close_button = WebElement(css_selector = 'span.q-basketBlockClouser-button.no-mobile')
+    basket_block_price_discount = WebElement(css_selector='div.price-all.w-discount')
 
-    # Header elements:

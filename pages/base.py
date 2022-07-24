@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- encoding=utf8 -*-
 
-import time
+import time, pickle
 from termcolor import colored
 
 from selenium.webdriver.common.by import By
@@ -45,6 +45,22 @@ class WebPage(object):
             if window_handle != original_window:
                 self._web_driver.switch_to.window(window_handle)
                 break
+
+    def save_cookies(self):
+        with open('test_cookies.tmp', 'wb') as cookies:
+            pickle.dump(self._web_driver.get_cookies(), cookies)
+
+    def load_cookies(self):
+        # load cookies, if possible
+        try:
+            with open('test_cookies.tmp', 'rb') as cookiesfile:
+                cookies = pickle.load(cookiesfile)
+                for cookie in cookies:
+                    self._web_driver.add_cookie(cookie)
+                self.refresh()
+        except:
+            print(colored('No valid cookies found', 'red'))
+            assert False, 'No valid cookies found'
 
     def go_back(self):
         self._web_driver.back()
