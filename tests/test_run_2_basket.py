@@ -146,8 +146,17 @@ def test_basket_service_price_apply_remove(prec_met, web_browser):
     service_prices = [float(p.replace(' ', '').replace('р.', '')) for p in service_prices]
     # applying service
     page.basket_services_radio.find()[1].click()
+    page.wait_page_loaded()
+    bb_cost_2 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
 
-    time.sleep(10)
+    assert bb_cost_2-bb_cost_1 == service_prices[0], "Service price not applied"
+
+    # removing service
+    page.basket_services_radio.find()[0].click()
+    page.wait_page_loaded()
+    bb_cost_2 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+
+    assert bb_cost_2 == bb_cost_1, "Service price not removed"
 
 
 # def test_basket_delete_items(prec_met, web_browser):

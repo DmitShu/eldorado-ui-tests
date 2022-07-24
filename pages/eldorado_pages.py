@@ -103,6 +103,6 @@ class BasketPage(WebPage):
     basket_block_spinner_left = WebElement(css_selector='div.qs-side-left')
     basket_block_spinner_input = WebElement(css_selector='div.qs-side-center input')
     basket_total_services_price = WebElement(css_selector='span[id="services_price_td"]')
-    basket_services_radio = ManyWebElements(css_selector='span.warranties')
+    basket_services_radio = ManyWebElements(css_selector='label.checkboxlabel')
     basket_services_prices = ManyWebElements(css_selector='span.price_value')
 
