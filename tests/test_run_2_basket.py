@@ -102,22 +102,70 @@ def prec_met():
     assert preconditions, "Precondition not met"
 
 
-def test_basket_delete_items(prec_met, web_browser):
-    """ Removing items from basket """
+def test_basket_items_count_change(prec_met, web_browser):
+    """ Changing item count in basket """
 
     page = BasketPage(web_browser)
     page.load_cookies()
-    # removing first item
-    page.basket_block_close_button.click()
+    # initial prices and count
+    price_1 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    bb_cost_1 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+    # increasing item count with "+" button
+    page.basket_block_spinner_right.click()
     page.wait_page_loaded()
-    # checking remaining items number and price
+    # getting new values
     bb_count = (float(page.bb_count.get_text()))
-    bb_cost = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
-    item_cost = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    bb_cost_2 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
 
-    assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
-    assert item_cost == bb_cost, f'{bb_cost} in basket, but {item_cost} expected'
+    assert bb_count == 3, f'{bb_count} in basket, but 3 expected'
+    assert price_2/price_1 == 2, 'Quantity has not changed'
+    assert bb_cost_2-bb_cost_1 == price_1, 'The new price is incorrect'
 
-    # removing last item
-    page.basket_block_close_button.click()
+    # decreasing item count with "-" button
+    page.basket_block_spinner_left.click()
+    page.wait_page_loaded()
+    # getting new values
+    bb_count = (float(page.bb_count.get_text()))
+    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    bb_cost_2 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+
+    assert bb_count == 2, f'{bb_count} in basket, but 2 expected'
+    assert price_2 == price_1, 'Quantity has not changed'
+    assert bb_cost_2 == bb_cost_1, 'The new price is incorrect'
+
+
+def test_basket_service_price_apply_remove(prec_met, web_browser):
+    """ Adding and removing services """
+
+    page = BasketPage(web_browser)
+    page.load_cookies()
+    # initial prices
+    bb_cost_1 = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+    service_prices = page.basket_services_prices.get_text()
+    service_prices = [float(p.replace(' ', '').replace('р.', '')) for p in service_prices]
+    # applying service
+    page.basket_services_radio.find()[1].click()
+
+    time.sleep(10)
+
+
+# def test_basket_delete_items(prec_met, web_browser):
+#     """ Removing items from basket """
+#
+#     page = BasketPage(web_browser)
+#     page.load_cookies()
+#     # removing first item
+#     page.basket_block_close_button.click()
+#     page.wait_page_loaded()
+#     # checking remaining items number and price
+#     bb_count = (float(page.bb_count.get_text()))
+#     bb_cost = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
+#     item_cost = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+#
+#     assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
+#     assert item_cost == bb_cost, f'{bb_cost} in basket, but {item_cost} expected'
+#
+#     # removing last item
+#     page.basket_block_close_button.click()
 

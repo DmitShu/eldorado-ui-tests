@@ -98,4 +98,11 @@ class BasketPage(WebPage):
     # basket container items
     basket_block_close_button = WebElement(css_selector = 'span.q-basketBlockClouser-button.no-mobile')
     basket_block_price_discount = WebElement(css_selector='div.price-all.w-discount')
+    basket_block_price_discount = WebElement(css_selector='div.price-all.w-discount')
+    basket_block_spinner_right = WebElement(css_selector='div.qs-side-right')
+    basket_block_spinner_left = WebElement(css_selector='div.qs-side-left')
+    basket_block_spinner_input = WebElement(css_selector='div.qs-side-center input')
+    basket_total_services_price = WebElement(css_selector='span[id="services_price_td"]')
+    basket_services_radio = ManyWebElements(css_selector='span.warranties')
+    basket_services_prices = ManyWebElements(css_selector='span.price_value')
 
