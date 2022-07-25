@@ -9,6 +9,7 @@ orders_url = '/personal/orders/'
 blog_url = 'https://blog.eldorado.ru/'
 b2b_url = '/b2b/'
 basket_url = '/personal/basket.php'
+order_url = '/personal/order_self_delivery.php'
 
 
 # Header city form
@@ -29,4 +30,17 @@ order_empty_msg = 'Введите номер заказа'
 # Search
 search_item_1 = 'Холодильники'
 search_item_2 = 'Утюги'
+
+
+# Basket item count (max 999 allowed)
+count_p_1 = '10'
+count_p_2 = '999'
+сount_n_zero = '0'
+сount_n_large = '1000'
+count_n_verybig = '2147483648'
+count_n_negative = '-10'
+count_n_float = '1.5'
+count_n_text = 'abc'
+count_n_special = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
+
 

@@ -116,6 +116,7 @@ class WebElement(object):
 
         if element:
             element.click()
+            element.send_keys(3*Keys.BACKSPACE)
             element.clear()
             element.send_keys(keys)
             time.sleep(wait)

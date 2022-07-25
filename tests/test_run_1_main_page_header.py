@@ -22,7 +22,7 @@ How To Run Tests
 
 """
 
-from pages.eldorado_pages import MainPage
+from pages.eldorado_page import MainPage
 from pages.variables import *
 import random as r
 import pytest

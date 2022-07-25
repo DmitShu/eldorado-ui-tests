@@ -51,6 +51,7 @@ class WebPage(object):
             pickle.dump(self._web_driver.get_cookies(), cookies)
 
     def load_cookies(self):
+        self._web_driver.delete_all_cookies()
         # load cookies, if possible
         try:
             with open('test_cookies.tmp', 'rb') as cookiesfile:
