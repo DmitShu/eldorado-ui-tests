@@ -22,11 +22,11 @@ How To Run Tests
 
 """
 
-from pages.eldorado_page import *
-from pages.variables import *
+import time
 import random as r
 import pytest
-import time
+from pages.eldorado_page import *
+from pages.variables import *
 
 
 def test_basket_base_functions(web_browser):
@@ -48,9 +48,9 @@ def test_basket_base_functions(web_browser):
     page.add_to_cart_button.click()
     page.wait_page_loaded()
     # checking result
-    price_total = float(page.add_to_cart_price.get_text().replace(' ', ''))
+    price_total = get_price(page.add_to_cart_price.get_text())
     cart_counter = float(page.cart_counter.get_text())
-    cart_total = float((page.cart_total.get_text().split(' р.')[0].replace(' ', '')))
+    cart_total = get_price(page.cart_total.get_text())
 
     assert cart_counter == 1, f'{cart_counter} in basket, but 1 expected'
     assert cart_total == price_total, f'{cart_total} in basket, but {price_total} expected'
@@ -66,9 +66,9 @@ def test_basket_base_functions(web_browser):
     page.add_to_cart_button.click()
     page.wait_page_loaded()
     # checking result
-    price_total += float(page.add_to_cart_price.get_text().replace(' ', ''))
+    price_total += get_price(page.add_to_cart_price.get_text())
     cart_counter = float(page.cart_counter.get_text())
-    cart_total = float((page.cart_total.get_text().split(' р.')[0].replace(' ', '')))
+    cart_total = get_price(page.cart_total.get_text())
 
     assert cart_counter == 2, f'{cart_counter} in basket, but 2 expected'
     assert cart_total == price_total, f'{cart_total} in basket, but {price_total} expected'
@@ -77,8 +77,8 @@ def test_basket_base_functions(web_browser):
     page.header_basket_button.click()
     time.sleep(1)
     page.wait_page_loaded()
-    bb_count = (float(page.bb_count.get_text()))
-    bb_cost = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    bb_count = float(page.bb_count.get_text())
+    bb_cost = get_price(page.bb_cost.get_text())
 
     assert bb_count == 2, f'{bb_count} in basket, but 2 expected'
     assert price_total == bb_cost, f'{bb_cost} in basket, but {price_total} expected'
@@ -117,8 +117,8 @@ def prec_basket_test(web_browser):
 
 @pytest.fixture()
 def prec_basket_cook(web_browser):
+    """ for fast testing only / not reliable / cart stored on server """
 
-    # for fast testing cart stored on server
     page = MainPage(web_browser)
     page.get(main_url+basket_url)
     page.load_cookies()
@@ -133,7 +133,7 @@ def test_basket_price_in_orders(prec_basket_test):
     page = prec_basket_test
 
     # Total price on basket page
-    bb_cost = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    bb_cost = get_price(page.bb_cost.get_text())
     # Clicking "Продолжить" button
     page.scroll_down()
     page.basket_toorders_button.wait_to_be_clickable()
@@ -144,9 +144,33 @@ def test_basket_price_in_orders(prec_basket_test):
     assert order_url in page.get_current_url(), "Wrong URL"
 
     # Total price on order page
-    order_cost = (float(page.order_total_price.get_text().replace(' ', '').replace('р.', '')))
+    order_cost = get_price(page.order_total_price.get_text())
 
-    assert bb_cost == order_cost, 'Price in orders page != price in basket page'
+    assert bb_cost == order_cost != 0, 'Price in orders page != price in basket page'
+
+
+def test_basket_service_price_apply_remove(prec_basket_test):
+    """ Adding and removing services """
+
+    page = prec_basket_test
+
+    # initial prices
+    bb_cost_1 = get_price(page.bb_cost.get_text())
+    service_prices = page.basket_services_prices.get_text()
+    service_prices = [get_price(p) for p in service_prices]
+    # applying service
+    page.basket_services_radio.find()[1].click()
+    page.wait_page_loaded()
+    bb_cost_2 = get_price(page.bb_cost.get_text())
+
+    assert bb_cost_2-bb_cost_1 == service_prices[0], "Service price not applied"
+
+    # removing service
+    page.basket_services_radio.find()[0].click()
+    page.wait_page_loaded()
+    bb_cost_2 = get_price(page.bb_cost.get_text())
+
+    assert bb_cost_2 == bb_cost_1, "Service price not removed"
 
 
 def test_basket_items_count_change(prec_basket_test):
@@ -155,15 +179,15 @@ def test_basket_items_count_change(prec_basket_test):
     page = prec_basket_test
 
     # initial prices and count
-    price_1 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-    bb_cost_1 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    price_1 = get_price(page.basket_block_price_discount.get_text())
+    bb_cost_1 = get_price(page.bb_cost.get_text())
     # increasing item count with "+" button
     page.basket_block_spinner_right.click()
     page.wait_page_loaded()
     # getting new values
-    bb_count = (float(page.bb_count.get_text()))
-    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-    bb_cost_2 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    bb_count = get_price(page.bb_count.get_text())
+    price_2 = get_price(page.basket_block_price_discount.get_text())
+    bb_cost_2 = get_price(page.bb_cost.get_text())
 
     assert bb_count == 2, f'{bb_count} in basket, but 2 expected'
     assert price_2/price_1 == 2, 'Quantity has not changed'
@@ -173,9 +197,9 @@ def test_basket_items_count_change(prec_basket_test):
     page.basket_block_spinner_left.click()
     page.wait_page_loaded()
     # getting new values
-    bb_count = (float(page.bb_count.get_text()))
-    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-    bb_cost_2 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    bb_count = float(page.bb_count.get_text())
+    price_2 = get_price(page.basket_block_price_discount.get_text())
+    bb_cost_2 = get_price(page.bb_cost.get_text())
 
     assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
     assert price_2 == price_1, 'Quantity has not changed'
@@ -188,15 +212,15 @@ def test_basket_decreasing_below_1(prec_basket_test):
     page = prec_basket_test
 
     # initial prices and count
-    price_1 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-    bb_cost_1 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    price_1 = get_price(page.basket_block_price_discount.get_text())
+    bb_cost_1 = get_price(page.bb_cost.get_text())
     # increasing item count with "+" button
     page.basket_block_spinner_left.click()
     page.wait_page_loaded()
     # getting new values
-    bb_count = (float(page.bb_count.get_text()))
-    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-    bb_cost_2 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
+    bb_count = float(page.bb_count.get_text())
+    price_2 = get_price(page.basket_block_price_discount.get_text())
+    bb_cost_2 = get_price(page.bb_cost.get_text())
 
     assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
     assert price_2/price_1 == 1, 'The quantity has changed'
@@ -209,14 +233,37 @@ def test_basket_manual_count_input_positive(prec_basket_test):
     page = prec_basket_test
 
     # initial prices
-    price_1 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    price_1 = get_price(page.basket_block_price_discount.get_text())
     # setting new count
     page.basket_block_spinner_input.send_keys(count_p_2)
     page.wait_page_loaded()
     # new prices
-    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    price_2 = get_price(page.basket_block_price_discount.get_text())
 
     assert price_2/price_1 == float(count_p_2), "The price has not changed"
+
+
+def test_basket_increasing_above_999(prec_basket_test):
+    """ Increase button not working if item count is 999 """
+
+    page = prec_basket_test
+
+    # setting item count (999)
+    page.basket_block_spinner_input.send_keys(count_p_2)
+    page.wait_page_loaded()
+    # checking item count
+    bb_count = float(page.bb_count.get_text())
+
+    assert bb_count == float(count_p_2), "Count has not changed"
+
+    page.refresh()
+    # increasing item count with "+" button
+    page.basket_block_spinner_right.click()
+    page.wait_page_loaded()
+    # getting new values
+    bb_count = get_price(page.bb_count.get_text())
+
+    assert bb_count == float(count_p_2), "Count has changed"
 
 
 def test_basket_manual_count_input_negative(prec_basket_test):
@@ -225,38 +272,14 @@ def test_basket_manual_count_input_negative(prec_basket_test):
     page = prec_basket_test
 
     # initial prices
-    price_1 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    price_1 = get_price(page.basket_block_price_discount.get_text())
     # setting new count
-    page.basket_block_spinner_input.send_keys(count_n_special)
+    page.basket_block_spinner_input.send_keys(count_n_zero)
     page.wait_page_loaded()
     # new prices
-    price_2 = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
+    price_2 = get_price(page.basket_block_price_discount.get_text())
 
     assert price_2 == price_1, "The price has changed"
-
-
-def test_basket_service_price_apply_remove(prec_basket_test):
-    """ Adding and removing services """
-
-    page = prec_basket_test
-
-    # initial prices
-    bb_cost_1 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
-    service_prices = page.basket_services_prices.get_text()
-    service_prices = [float(p.replace(' ', '').replace('р.', '')) for p in service_prices]
-    # applying service
-    page.basket_services_radio.find()[1].click()
-    page.wait_page_loaded()
-    bb_cost_2 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
-
-    assert bb_cost_2-bb_cost_1 == service_prices[0], "Service price not applied"
-
-    # removing service
-    page.basket_services_radio.find()[0].click()
-    page.wait_page_loaded()
-    bb_cost_2 = (float(page.bb_cost.get_text().replace(' ', '').replace('р', '')))
-
-    assert bb_cost_2 == bb_cost_1, "Service price not removed"
 
 
 # def test_basket_delete_items(prec_met, web_browser):
@@ -285,4 +308,3 @@ def test_basket_test(prec_basket_test):
 
     time.sleep(55)
     # initial prices
-

@@ -1,4 +1,8 @@
-# Testing variables
+"""
+
+Contains variables for tests
+
+"""
 
 # URL'S
 main_url = 'https://www.eldorado.ru'
@@ -35,12 +39,10 @@ search_item_2 = 'Утюги'
 # Basket item count (max 999 allowed)
 count_p_1 = '10'
 count_p_2 = '999'
-сount_n_zero = '0'
-сount_n_large = '1000'
+count_n_zero = '0'
+count_n_large = '1000'
 count_n_verybig = '2147483648'
 count_n_negative = '-10'
 count_n_float = '1.5'
 count_n_text = 'abc'
 count_n_special = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
-
-

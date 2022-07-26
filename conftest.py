@@ -1,16 +1,20 @@
-#!/usr/bin/python3
-# -*- encoding=utf8 -*-
+"""
 
-# This is example shows how we can manage failed tests
-# and make screenshots after any failed test case.
+Contains all the required code to catch failed test cases and make screenshot
+of the page in case any test case will fail.
 
-import pytest
-import allure
+"""
+
+
 import uuid
+import allure
+import pytest
 
 
 @pytest.fixture
 def chrome_options(chrome_options):
+    """ Chromium browser settings: """
+
     # chrome_options.binary_location = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
     # chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
@@ -21,8 +25,9 @@ def chrome_options(chrome_options):
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
-    # This function helps to detect that some test failed
-    # and pass this information to teardown:
+    """ This function helps to detect that some test failed
+        and pass this information to teardown:
+    """
 
     outcome = yield
     rep = outcome.get_result()
@@ -32,6 +37,9 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.fixture()
 def web_browser(request, selenium):
+    """ This function helps to catch failed test cases and make screenshot
+        of the page in case any test case will fail
+    """
 
     browser = selenium
     # browser.set_window_size(1600, 1000)

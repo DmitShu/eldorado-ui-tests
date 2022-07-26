@@ -1,5 +1,8 @@
-#!/usr/bin/python3
-# -*- encoding=utf8 -*-
+"""
+
+Contains helper class to define web elements on web pages.
+
+"""
 
 import time
 from termcolor import colored

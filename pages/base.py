@@ -1,7 +1,11 @@
-#!/usr/bin/python3
-# -*- encoding=utf8 -*-
+"""
 
-import time, pickle
+contains PageObject pattern implementation for Python.
+
+"""
+
+import time
+import pickle
 from termcolor import colored
 
 from selenium.webdriver.common.by import By

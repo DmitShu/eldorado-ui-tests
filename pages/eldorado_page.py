@@ -1,6 +1,7 @@
 """
-main page
-"Эльдорадо"
+
+"Эльдорадо" page and elements
+
 """
 
 from pages.base import WebPage
@@ -8,6 +9,17 @@ from pages.elements import WebElement
 from pages.elements import ManyWebElements
 from pages.variables import *
 
+
+def get_price(some_text):
+    # This functions attempts to convert price
+    price = 0
+    try:
+        price = float(some_text.split('р')[0].replace(' ', ''))
+    except:
+        # nothing to do, returning 0
+        pass
+
+    return price
 
 class MainPage(WebPage):
 
