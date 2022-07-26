@@ -1,6 +1,6 @@
 """
 
-"Эльдорадо" page and elements
+"Эльдорадо" page elements and additional functions
 
 """
 
@@ -10,22 +10,11 @@ from pages.elements import ManyWebElements
 from pages.variables import *
 
 
-def get_price(some_text):
-    # This functions attempts to convert price
-    price = 0
-    try:
-        price = float(some_text.split('р')[0].replace(' ', ''))
-    except:
-        # nothing to do, returning 0
-        pass
-
-    return price
-
 class MainPage(WebPage):
 
     def __init__(self, web_driver, url=''):
         if not url:
-            url = main_url
+            url = URL_MAIN
 
         super().__init__(web_driver, url)
 
@@ -39,18 +28,19 @@ class MainPage(WebPage):
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
     region_city_buttons = ManyWebElements(css_selector = "div[role='dialog'] span[role='button']")
+    region_close_button = WebElement(css_selector = 'button[aria-label="Закрыть"]')
 
     # "Эльдорадости"
-    header_club = WebElement(xpath = "//a[@href='"+club_url+"']")
+    header_club = WebElement(xpath = "//a[@href='" + URL_CLUB + "']")
 
     # "Магазины"
-    header_shops = WebElement(xpath = "//a[@href='"+shops_url+"']")
+    header_shops = WebElement(xpath = "//a[@href='" + URL_SHOPS + "']")
 
     # "Пункты выдачи"
-    header_pvz = WebElement(xpath = "//a[@href='"+pvz_url+"']")
+    header_pvz = WebElement(xpath = "//a[@href='" + URL_PVZ + "']")
 
     # "Статус заказа"
-    header_orders = WebElement(xpath = "//a[@href='"+orders_url+"']")
+    header_orders = WebElement(xpath = "//a[@href='" + URL_ORDERS + "']")
 
     # "Статус заказа" form elements
     orders_form_input_order = WebElement(css_selector = 'form input[name="name"]')
@@ -59,10 +49,10 @@ class MainPage(WebPage):
     orders_form_messages = ManyWebElements(css_selector = 'div[role="dialog"] form div span')
 
     # "Эльдоблог"
-    header_blog = WebElement(xpath = "//a[@href='"+blog_url+"']")
+    header_blog = WebElement(xpath = "//a[@href='" + URL_BLOG + "']")
 
     # "Для бизнеса"
-    header_b2b = WebElement(xpath = "//a[@href='"+b2b_url+"']")
+    header_b2b = WebElement(xpath = "//a[@href='" + URL_B2B + "']")
 
     # "Открыть онлайн-консультант"
     header_chat_button = WebElement(css_selector = '#__next button[aria-label="Открыть онлайн-консультант"]')
@@ -80,16 +70,17 @@ class MainPage(WebPage):
 
     # Search-form
     header_search_input = WebElement(css_selector = 'input[name="search"]')
-    header_search_item_1 = WebElement(xpath = "//a[normalize-space(.)='"+search_item_1+"']")
-    header_search_item_2 = WebElement(xpath = "//a[normalize-space(.)='"+search_item_2+"']")
+    header_search_item_1 = WebElement(xpath = "//a[normalize-space(.)='" + SEARCH_ITEM_1 + "']")
+    header_search_item_2 = WebElement(xpath = "//a[normalize-space(.)='" + SEARCH_ITEM_2 + "']")
 
 
     # "Корзина"
-    header_basket_button = WebElement(xpath = "//a[@href='"+basket_url+"']")
+    header_basket_button = WebElement(xpath = "//a[@href='" + URL_BASKET + "']")
     cart_counter = WebElement(xpath = "//span[@data-dy='header-cart-counter']")
     cart_total = WebElement(xpath = "//span[@data-dy='header-cart-counter']/..")
 
-    add_to_cart_button = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
+    add_to_cart_button_filter = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
+    add_to_cart_button_main = WebElement(xpath = "//div[@aria-labelledby]//button[normalize-space(.)='В корзину']")
     add_to_cart_price = WebElement(css_selector = 'span[data-pc="offer_price"]')
 
 
@@ -116,3 +107,4 @@ class MainPage(WebPage):
 
 
     order_total_price = WebElement(css_selector='div.rsc-price-all-value')
+

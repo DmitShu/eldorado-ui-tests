@@ -38,11 +38,11 @@ def test_city_select_input_positive(web_browser):
 
     assert page.region_input.is_visible(), "City select form not visible"
 
-    page.region_input.send_keys(city_p_1, 0.5)
+    page.region_input.send_keys(CITY_P_1, 0.5)
     page.region_option.click()
     page.wait_page_loaded()
 
-    assert city_p_1 in page.header_city_select.get_text(), "City was not selected"
+    assert CITY_P_1 in page.header_city_select.get_text(), "City was not selected"
 
 
 def test_city_select_input_negative(web_browser):
@@ -54,11 +54,11 @@ def test_city_select_input_negative(web_browser):
 
     assert page.region_input.is_visible(), "City select form not visible"
 
-    page.region_input.send_keys(city_n_1, 0.5)
+    page.region_input.send_keys(CITY_N_1, 0.5)
     page.region_option.click()
     page.wait_page_loaded()
 
-    assert city_bad_message in page.region_option.get_text(), "Now invalid input message"
+    assert CITY_BAD_MESSAGE in page.region_option.get_text(), "Now invalid input message"
 
 
 def test_city_select_by_button(web_browser):
@@ -87,12 +87,12 @@ def test_click_header_club(web_browser):
     page.header_club.click()
     page.wait_page_loaded()
 
-    assert club_url not in page.get_current_url(), "Same tab"
+    assert URL_CLUB not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert club_url in page.get_current_url(), "Wrong URL"
+    assert URL_CLUB in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_shops(web_browser):
@@ -102,12 +102,12 @@ def test_click_header_shops(web_browser):
     page.header_shops.click()
     page.wait_page_loaded()
 
-    assert shops_url not in page.get_current_url(), "Same tab"
+    assert URL_SHOPS not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert shops_url in page.get_current_url(), "Wrong URL"
+    assert URL_SHOPS in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_pvz(web_browser):
@@ -117,12 +117,12 @@ def test_click_header_pvz(web_browser):
     page.header_pvz.click()
     page.wait_page_loaded()
 
-    assert pvz_url not in page.get_current_url(), "Same tab"
+    assert URL_PVZ not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert pvz_url in page.get_current_url(), "Wrong URL"
+    assert URL_PVZ in page.get_current_url(), "Wrong URL"
 
 @pytest.mark.skip(reason="Valid order num + phone needed")
 def test_click_header_orders_valid_data(web_browser):
@@ -134,12 +134,12 @@ def test_click_header_orders_valid_data(web_browser):
 
     assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
 
-    page.orders_form_input_order = order_p_1
-    page.orders_form_input_phone = order_tel_p_1
+    page.orders_form_input_order = ORDER_P_1
+    page.orders_form_input_phone = ORDER_TEL_P_1
     page.orders_form_submit_button.click()
     messages = page.orders_form_messages.get_text()
 
-    assert order_tel_bad_message not in messages, order_tel_bad_message+'" on form'
+    assert ORDER_TEL_BAD_MESSAGE not in messages, ORDER_TEL_BAD_MESSAGE + '" on form'
 
 
 def test_click_header_orders_empty_fields(web_browser):
@@ -154,8 +154,8 @@ def test_click_header_orders_empty_fields(web_browser):
     page.orders_form_submit_button.click()
     messages = page.orders_form_messages.get_text()
 
-    assert order_tel_empty in messages, 'No "'+order_tel_empty+'" on form'
-    assert order_empty_msg in messages, 'No "'+order_empty_msg+'" on form'
+    assert ORDER_TEL_EMPTY in messages, 'No "' + ORDER_TEL_EMPTY + '" on form'
+    assert ORDER_EMPTY_MSG in messages, 'No "' + ORDER_EMPTY_MSG + '" on form'
 
 
 def test_click_header_orders_invalid_phone(web_browser):
@@ -167,12 +167,12 @@ def test_click_header_orders_invalid_phone(web_browser):
 
     assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
 
-    page.orders_form_input_order = order_p_1
-    page.orders_form_input_phone = order_tel_n_1
+    page.orders_form_input_order = ORDER_P_1
+    page.orders_form_input_phone = ORDER_TEL_N_1
     page.orders_form_submit_button.click()
     messages = page.orders_form_messages.get_text()
 
-    assert order_tel_bad_message in messages, 'No "'+order_tel_bad_message+'" on form'
+    assert ORDER_TEL_BAD_MESSAGE in messages, 'No "' + ORDER_TEL_BAD_MESSAGE + '" on form'
 
 
 def test_click_header_blog(web_browser):
@@ -182,12 +182,12 @@ def test_click_header_blog(web_browser):
     page.header_blog.click()
     page.wait_page_loaded()
 
-    assert blog_url not in page.get_current_url(), "Same tab"
+    assert URL_BLOG not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert blog_url in page.get_current_url(), "Wrong URL"
+    assert URL_BLOG in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_b2b(web_browser):
@@ -197,12 +197,12 @@ def test_click_header_b2b(web_browser):
     page.header_b2b.click()
     page.wait_page_loaded()
 
-    assert b2b_url not in page.get_current_url(), "Same tab"
+    assert URL_B2B not in page.get_current_url(), "Same tab"
 
     page.switch_tab()
     page.wait_page_loaded()
 
-    assert b2b_url in page.get_current_url(), "Wrong URL"
+    assert URL_B2B in page.get_current_url(), "Wrong URL"
 
 
 def test_click_header_chat(web_browser):
@@ -233,4 +233,4 @@ def test_click_header_basket(web_browser):
     page.header_basket_button.click()
     page.wait_page_loaded()
 
-    assert basket_url in page.get_current_url(), "Not a basket page"
+    assert URL_BASKET in page.get_current_url(), "Not a basket page"
