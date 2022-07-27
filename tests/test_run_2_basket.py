@@ -26,7 +26,7 @@ import time
 import random as r
 import pytest
 from pages.eldorado_page import *
-from pages.variables import *
+from pages.helpers import *
 
 
 def test_basket_base_functions(web_browser):
@@ -108,6 +108,17 @@ def test_basket_price_in_orders(web_browser):
     order_cost = get_price(page.order_total_price.get_text())
 
     assert bb_cost == order_cost != 0, 'Price in orders page != price in basket page'
+
+
+def test_basket_swiper_items_shown(web_browser):
+    """ Verifies that the user is offered additional products """
+
+    # Prepare basket for tests
+    page = prepare_basket(MainPage(web_browser))
+
+    # scrolling to items
+    page.scroll_down()
+    assert page.basket_retailrocket_button.is_clickable(), "Related products not showing"
 
 
 def test_basket_service_price_apply_remove(web_browser):
@@ -377,16 +388,3 @@ def test_basket_empty_after_page_refresh(web_browser):
     page.refresh()
 
     assert page.basket_empty_span.is_visible(), 'Basket is not empty.'
-
-
-
-
-def test_basket_test(web_browser):
-    """ testing test """
-
-    page=MainPage(web_browser)
-
-    page.get(URL_MAIN)
-    page.refresh()
-    page.basket_empty_span.is_visible()
-

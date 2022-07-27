@@ -23,7 +23,7 @@ How To Run Tests
 """
 
 from pages.eldorado_page import MainPage
-from pages.variables import *
+from pages.helpers import *
 import random as r
 import pytest
 import time

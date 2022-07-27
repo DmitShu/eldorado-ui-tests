@@ -16,7 +16,7 @@ of the page in case any test case will fail.
 
 [pages/elements.py](pages/elements.py) contains helper class to define web elements on web pages.
 
-[pages/variables.py](pages/variables.py) contains variables for tests
+[pages/helpers.py](pages/helpers.py) contains variables for tests
 
 [tests/test_run_1_main_page_header.py](tests/test_run_1_main_page_header.py) contains several Web UI tests for main page header elements and forms...
 
