@@ -4,6 +4,7 @@
 
 """
 
+import time
 from pages.base import WebPage
 from pages.elements import WebElement
 from pages.elements import ManyWebElements
@@ -92,7 +93,7 @@ class MainPage(WebPage):
     bb_cost = WebElement(css_selector = 'span[id="basketCost"]')
 
     # basket container items
-    basket_block_close_button = WebElement(css_selector = 'span.q-basketBlockClouser-button.no-mobile')
+    basket_block_close_button = WebElement(css_selector = 'span.q-basketBlockClouser-button')
     basket_block_price_discount = WebElement(css_selector = 'div.price-all.w-discount')
     basket_block_spinner_right = WebElement(css_selector = 'div.qs-side-right')
     basket_block_spinner_left = WebElement(css_selector = 'div.qs-side-left')
@@ -101,6 +102,9 @@ class MainPage(WebPage):
     basket_services_radio = ManyWebElements(css_selector = 'label.checkboxlabel')
     basket_services_prices = ManyWebElements(css_selector = 'span.price_value')
     basket_toorders_button = WebElement(css_selector = 'div.cartTotalPart span.successBttnCP')
+    basket_item_recovery_button = WebElement(xpath = "//a[normalize-space(.)='Восстановить в корзине']")
+    basket_clear_button = WebElement(css_selector = 'span.q-basketBlockRowHeaderItem__clearBasketBtn')
+    basket_empty_span = WebElement(css_selector = 'div.empty-basket')
 
 
     #____________Order page____________
@@ -108,3 +112,48 @@ class MainPage(WebPage):
 
     order_total_price = WebElement(css_selector='div.rsc-price-all-value')
 
+
+
+#------------------------------------------------------------------------
+# common functions, used in basket tests
+
+
+def get_price(some_text):
+    """ This functions attempts to convert price """
+
+    price = 0
+    try:
+        price = float(some_text.split('р')[0].replace(' ', ''))
+    except:
+        # nothing to do, returning 0
+        pass
+
+    return price
+
+
+def prepare_basket(page):
+    """ Prepare basket for tests """
+    # adding one item
+    page.add_to_cart_button_main.scroll_to_element()
+    time.sleep(3)
+    page.add_to_cart_button_main.wait_to_be_clickable(3)
+    page.add_to_cart_button_main.scroll_to_element()
+    page.add_to_cart_button_main.click()
+    time.sleep(1)
+    # checking result in basket page
+    page.get(URL_MAIN+URL_BASKET)
+    bb_count = get_price(page.bb_count.get_text())
+
+    assert bb_count == 1, f'Precondition error. {bb_count} in basket, but 1 expected'
+
+    return page
+
+
+def prec_basket_cook(page):
+    """ for fast testing only / not reliable / cart stored on server """
+
+    page.get(URL_MAIN + URL_BASKET)
+    page.load_cookies()
+    page.wait_page_loaded()
+
+    return page

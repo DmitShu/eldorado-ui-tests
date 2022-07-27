@@ -262,83 +262,131 @@ def test_basket_manual_count_input_negative(web_browser, value):
     assert 0<bb_count<1000, "item count out of range"
 
 
-# def test_basket_delete_items(prec_met, web_browser):
-#     """ Removing items from basket """
-#
-#     page = BasketPage(web_browser)
-#     page.load_cookies()
-#     # removing first item
-#     page.basket_block_close_button.click()
-#     page.wait_page_loaded()
-#     # checking remaining items number and price
-#     bb_count = (float(page.bb_count.get_text()))
-#     bb_cost = (float(page.bb_cost.get_text().split('р')[0].replace(' ', '')))
-#     item_cost = (float(page.basket_block_price_discount.get_text().replace(' ', '').replace('р', '')))
-#
-#     assert bb_count == 1, f'{bb_count} in basket, but 1 expected'
-#     assert item_cost == bb_cost, f'{bb_cost} in basket, but {item_cost} expected'
-#
-#     # removing last item
-#     page.basket_block_close_button.click()
+def test_basket_remove_item(web_browser):
+    """ Removing item from basket with individual X button """
+
+    # Prepare basket for test
+    page = prepare_basket(MainPage(web_browser))
+
+    # removing item
+    page.basket_block_close_button.click()
+    page.wait_page_loaded()
+    # checking remaining items number and price
+    bb_count = get_price(page.bb_count.get_text())
+    bb_cost = get_price(page.bb_cost.get_text())
+
+    assert bb_count == 0, 'Item was not removed'
+    assert bb_cost == 0, 'Item was not removed'
+
+
+def test_basket_restore_removed_item(web_browser):
+    """ Test item recovery in basket page """
+
+    # Prepare basket for test
+    page = prepare_basket(MainPage(web_browser))
+
+    # removing item
+    page.basket_block_close_button.click()
+    time.sleep(1)
+    page.basket_item_recovery_button.wait_to_be_clickable(5)
+
+    # Checking item removed
+    bb_count = get_price(page.bb_count.get_text())
+    assert bb_count == 0, 'Item was not removed'
+
+    # Checking recovery button
+    assert page.basket_item_recovery_button.is_clickable(), 'Restore button is not clickable'
+
+    # Restoring item
+    page.basket_item_recovery_button.click()
+    page.wait_page_loaded()
+
+    # Checking item restored
+    bb_count = get_price(page.bb_count.get_text())
+    assert bb_count == 1, 'Item was not restored'
+
+
+def test_basket_clear_basket_button(web_browser):
+    """ Test clear basket button functionality """
+
+    # Prepare basket for test
+    page = prepare_basket(MainPage(web_browser))
+
+    # removing by button
+    page.basket_clear_button.click()
+    time.sleep(1)
+    page.wait_page_loaded()
+
+    # checking remaining items number and price
+    bb_count = get_price(page.bb_count.get_text())
+    bb_cost = get_price(page.bb_cost.get_text())
+
+    assert bb_count == 0, 'Item was not removed'
+    assert bb_cost == 0, 'Item was not removed'
+
+
+def test_basket_item_could_restore_after_clean(web_browser):
+    """ Test items can be restored after cleaning the basket. """
+
+    # Prepare basket for test
+    page = prepare_basket(MainPage(web_browser))
+
+    # removing by button
+    page.basket_clear_button.click()
+    time.sleep(1)
+    page.wait_page_loaded()
+
+    # checking remaining items number and price
+    bb_count = get_price(page.bb_count.get_text())
+    bb_cost = get_price(page.bb_cost.get_text())
+
+    assert bb_count == 0, 'Item was not removed'
+    assert bb_cost == 0, 'Item was not removed'
+
+    # Checking recovery button
+    assert page.basket_item_recovery_button.is_clickable(), 'Restore button is not clickable'
+
+    # Restoring item
+    page.basket_item_recovery_button.click()
+    page.wait_page_loaded()
+
+    # Checking item restored
+    bb_count = get_price(page.bb_count.get_text())
+    assert bb_count == 1, 'Item was not restored'
+
+
+def test_basket_empty_after_page_refresh(web_browser):
+    """ Checking that the basket is empty after cleaning and reloading the page. """
+
+    # Prepare basket for test
+    page = prepare_basket(MainPage(web_browser))
+
+    # removing by button
+    page.basket_clear_button.click()
+    time.sleep(1)
+    page.wait_page_loaded()
+
+    # checking remaining items number and price
+    bb_count = get_price(page.bb_count.get_text())
+    bb_cost = get_price(page.bb_cost.get_text())
+
+    assert bb_count == 0, 'Item was not removed'
+    assert bb_cost == 0, 'Item was not removed'
+
+    # refreshing page.
+    page.refresh()
+
+    assert page.basket_empty_span.is_visible(), 'Basket is not empty.'
+
+
 
 
 def test_basket_test(web_browser):
     """ testing test """
 
-    page = prepare_basket(MainPage(web_browser))
+    page=MainPage(web_browser)
 
     page.get(URL_MAIN)
+    page.refresh()
+    page.basket_empty_span.is_visible()
 
-    # adding one item
-    page.add_to_cart_button_main.scroll_to_element()
-    page.add_to_cart_button_main.click()
-    time.sleep(1)
-    # checking result in basket page
-    page.get(URL_MAIN+URL_BASKET)
-    bb_count = get_price(page.bb_count.get_text())
-
-    assert bb_count == 1, f'Precondition error. {bb_count} in basket, but 1 expected'
-
-
-# functions, used in tests
-
-
-def get_price(some_text):
-    """ This functions attempts to convert price """
-
-    price = 0
-    try:
-        price = float(some_text.split('р')[0].replace(' ', ''))
-    except:
-        # nothing to do, returning 0
-        pass
-
-    return price
-
-
-def prepare_basket(page):
-    """ Prepare basket for tests """
-    # adding one item
-    page.add_to_cart_button_main.scroll_to_element()
-    time.sleep(3)
-    page.add_to_cart_button_main.wait_to_be_clickable(3)
-    page.add_to_cart_button_main.scroll_to_element()
-    page.add_to_cart_button_main.click()
-    time.sleep(1)
-    # checking result in basket page
-    page.get(URL_MAIN+URL_BASKET)
-    bb_count = get_price(page.bb_count.get_text())
-
-    assert bb_count == 1, f'Precondition error. {bb_count} in basket, but 1 expected'
-
-    return page
-
-
-def prec_basket_cook(page):
-    """ for fast testing only / not reliable / cart stored on server """
-
-    page.get(URL_MAIN + URL_BASKET)
-    page.load_cookies()
-    page.wait_page_loaded()
-
-    return page
