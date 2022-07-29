@@ -23,7 +23,6 @@ How To Run Tests
 """
 
 import time
-import random as r
 import pytest
 from pages.eldorado_page import *
 from pages.helpers import *
@@ -33,12 +32,8 @@ def test_basket_base_functions(web_browser):
     """ Check base functionality. Add two items to basket and check total price"""
 
     page = MainPage(web_browser)
-    # closing choose region popups
-    page.header_city_select.click()
-    page.region_input.wait_to_be_clickable(5)
-    page.region_city_buttons.find()[0].click()
-    time.sleep(1)
-    page.wait_page_loaded()
+    # avoiding choose region popups
+    select_city(page)
 
     # searching first item
     page.header_search_input.click()
@@ -88,15 +83,16 @@ def test_basket_base_functions(web_browser):
 
 
 def test_basket_price_in_orders(web_browser):
-    """ Price in orders page = price in basket page """
+    """ Check price in orders page = price in basket page """
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # Total price on basket page
     bb_cost = get_price(page.bb_cost.get_text())
     # Clicking "Продолжить" button
-    page.scroll_down()
+    page.basket_toorders_button.scroll_to_element()
     page.basket_toorders_button.wait_to_be_clickable()
     page.basket_toorders_button.click()
     time.sleep(1)
@@ -110,22 +106,60 @@ def test_basket_price_in_orders(web_browser):
     assert bb_cost == order_cost != 0, 'Price in orders page != price in basket page'
 
 
-def test_basket_swiper_items_shown(web_browser):
+def test_basket_related_items_shown(web_browser):
     """ Verifies that the user is offered additional products """
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # scrolling to items
     page.scroll_down()
     assert page.basket_retailrocket_button.is_clickable(), "Related products not showing"
 
 
+def test_basket_accessories_items_shown(web_browser):
+    """ Checking that the user can select accessories """
+
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
+
+    # scrolling to items
+    assert page.basket_accessories_popup_button.is_clickable(), "Accessories products button not showing"
+
+    page.basket_accessories_popup_button.scroll_to_element()
+    page.basket_accessories_popup_button.click()
+
+    # checking button availability
+    page.basket_accessories_tocart_button.wait_to_be_clickable(5)
+    assert page.basket_accessories_tocart_button.is_clickable(), "Accessories not showing on popup"
+
+
+def test_basket_services_items_shown(web_browser):
+    """ Checking that the user can select additional services """
+
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
+
+    # scrolling to items
+    assert page.basket_services_popup_button.is_clickable(), "Services products button not showing"
+
+    page.basket_services_popup_button.scroll_to_element()
+    page.basket_services_popup_button.click()
+
+    # checking button availability
+    page.basket_services_tocart_button.wait_to_be_clickable(5)
+    assert page.basket_services_tocart_button.is_clickable(), "Services not showing on popup"
+
+
 def test_basket_service_price_apply_remove(web_browser):
     """ Adding and removing services """
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # initial prices
     bb_cost_1 = get_price(page.bb_cost.get_text())
@@ -149,8 +183,9 @@ def test_basket_service_price_apply_remove(web_browser):
 def test_basket_items_count_change(web_browser):
     """ Changing item count in basket + and - buttons"""
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # initial prices and count
     price_1 = get_price(page.basket_block_price_discount.get_text())
@@ -183,8 +218,9 @@ def test_basket_items_count_change(web_browser):
 def test_basket_decreasing_below_1(web_browser):
     """ Decrease button not working if item count is 1 """
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # initial prices and count
     price_1 = get_price(page.basket_block_price_discount.get_text())
@@ -205,8 +241,9 @@ def test_basket_decreasing_below_1(web_browser):
 def test_basket_manual_count_input_positive(web_browser):
     """ Changing item count in basket manually with valid count (999 max)"""
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # initial prices
     price_1 = get_price(page.basket_block_price_discount.get_text())
@@ -222,8 +259,9 @@ def test_basket_manual_count_input_positive(web_browser):
 def test_basket_increasing_above_999(web_browser):
     """ Increase button not working if item count is 999 """
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # setting item count (999)
     page.basket_block_spinner_input.send_keys(COUNT_P_2)
@@ -251,7 +289,7 @@ def test_basket_increasing_above_999(web_browser):
                                    COUNT_N_FLOAT,
                                    COUNT_N_TEXT,
                                    COUNT_N_SPECIAL,],
-                         ids= [COUNT_N_ZERO,
+                            ids=  [COUNT_N_ZERO,
                                    COUNT_N_LARGE,
                                    COUNT_N_VERYBIG,
                                    COUNT_N_NEGATIVE,
@@ -261,8 +299,9 @@ def test_basket_increasing_above_999(web_browser):
 def test_basket_manual_count_input_negative(web_browser, value):
     """ Changing item count in basket manually with invalid values"""
 
+    page = MainPage(web_browser)
     # Prepare basket for tests
-    page = prepare_basket(MainPage(web_browser))
+    prepare_basket(page)
 
     # setting new count
     page.basket_block_spinner_input.send_keys(value)
@@ -270,14 +309,15 @@ def test_basket_manual_count_input_negative(web_browser, value):
     # new prices
     bb_count = get_price(page.bb_count.get_text())
 
-    assert 0<bb_count<1000, "item count out of range"
+    assert (bb_count>=1 and bb_count<=999), "item count out of range"
 
 
 def test_basket_remove_item(web_browser):
     """ Removing item from basket with individual X button """
 
-    # Prepare basket for test
-    page = prepare_basket(MainPage(web_browser))
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
 
     # removing item
     page.basket_block_close_button.click()
@@ -293,8 +333,9 @@ def test_basket_remove_item(web_browser):
 def test_basket_restore_removed_item(web_browser):
     """ Test item recovery in basket page """
 
-    # Prepare basket for test
-    page = prepare_basket(MainPage(web_browser))
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
 
     # removing item
     page.basket_block_close_button.click()
@@ -320,8 +361,9 @@ def test_basket_restore_removed_item(web_browser):
 def test_basket_clear_basket_button(web_browser):
     """ Test clear basket button functionality """
 
-    # Prepare basket for test
-    page = prepare_basket(MainPage(web_browser))
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
 
     # removing by button
     page.basket_clear_button.click()
@@ -339,8 +381,9 @@ def test_basket_clear_basket_button(web_browser):
 def test_basket_item_could_restore_after_clean(web_browser):
     """ Test items can be restored after cleaning the basket. """
 
-    # Prepare basket for test
-    page = prepare_basket(MainPage(web_browser))
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
 
     # removing by button
     page.basket_clear_button.click()
@@ -369,8 +412,9 @@ def test_basket_item_could_restore_after_clean(web_browser):
 def test_basket_empty_after_page_refresh(web_browser):
     """ Checking that the basket is empty after cleaning and reloading the page. """
 
-    # Prepare basket for test
-    page = prepare_basket(MainPage(web_browser))
+    page = MainPage(web_browser)
+    # Prepare basket for tests
+    prepare_basket(page)
 
     # removing by button
     page.basket_clear_button.click()

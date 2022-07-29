@@ -1,5 +1,5 @@
 """
-These test cases check the presence and functions of elements on the main page header and forms.
+These test cases check the presence and functions of elements on the main page and some forms.
 
 How To Run Tests
 ----------------

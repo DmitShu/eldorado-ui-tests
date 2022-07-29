@@ -1,13 +1,13 @@
 """
 
-Contains common variables and methods, used in tests
+Contains common constants and methods, used in tests
 
 """
 
 import time
 
 #------------------------------------------------------------------------
-# common variables, used in tests
+# common constants, used in tests
 
 
 # URL'S
@@ -59,7 +59,7 @@ COUNT_N_SPECIAL = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
 
 
 #------------------------------------------------------------------------
-# common functions, used in tests
+# common methods, used in tests
 
 
 def get_price(some_text):
@@ -77,6 +77,7 @@ def get_price(some_text):
 
 def prepare_basket(page):
     """ Prepare basket for tests """
+
     # adding one item
     page.add_to_cart_button_main.scroll_to_element()
     time.sleep(3)
@@ -90,7 +91,15 @@ def prepare_basket(page):
 
     assert bb_count == 1, f'Precondition error. {bb_count} in basket, but 1 expected'
 
-    return page
+
+def select_city(page):
+    """ Selecting city prevents popup on different pages """
+
+    page.header_city_select.click()
+    page.region_input.wait_to_be_clickable(5)
+    page.region_city_buttons.find()[0].click()
+    time.sleep(1)
+    page.wait_page_loaded()
 
 
 def prec_basket_cook(page):
@@ -100,4 +109,3 @@ def prec_basket_cook(page):
     page.load_cookies()
     page.wait_page_loaded()
 
-    return page

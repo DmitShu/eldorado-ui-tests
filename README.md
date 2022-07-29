@@ -16,9 +16,12 @@ of the page in case any test case will fail.
 
 [pages/elements.py](pages/elements.py) contains helper class to define web elements on web pages.
 
-[pages/helpers.py](pages/helpers.py) contains variables for tests
+[pages/helpers.py](pages/helpers.py) contains common constants and methods? used in tests.
 
-[tests/test_run_1_main_page_header.py](tests/test_run_1_main_page_header.py) contains several Web UI tests for main page header elements and forms...
+
+[tests/test_run_1_main_page.py](tests/test_run_1_main.py) contains several Web UI tests for main page elements and forms.
+
+[tests/test_run_2_basket.py](tests/test_run_2_basket.py) contains several Web UI tests for basket page elements and forms.
 
 
 How To Run Tests

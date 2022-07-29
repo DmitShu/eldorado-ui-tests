@@ -106,6 +106,10 @@ class MainPage(WebPage):
     basket_clear_button = WebElement(css_selector = 'span.q-basketBlockRowHeaderItem__clearBasketBtn')
     basket_empty_span = WebElement(css_selector = 'div.empty-basket')
     basket_retailrocket_button = WebElement(css_selector = 'div.retailrocket-item a.rr-item__actions-buy')
+    basket_accessories_popup_button = WebElement(css_selector = 'button[data-popup-src="#accessories-popup"]')
+    basket_services_popup_button = WebElement(css_selector = 'button[data-popup-src="#services-popup"]')
+    basket_accessories_tocart_button = WebElement(css_selector = 'a.servicesItem.q-btn-to-cart')
+    basket_services_tocart_button = WebElement(css_selector = 'a.servicesItem.add_services')
 
 
     #____________Order page____________
