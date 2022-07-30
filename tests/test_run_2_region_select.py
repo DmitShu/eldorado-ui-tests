@@ -45,11 +45,12 @@ def test_city_select_popup_yes(web_browser):
 
     # Popup is no longer visible on page
     page.refresh()
-    assert page.header_city_popup_yes.is_visible() == False, "Popup is back"
+
+    assert page.header_city_popup_yes.wait_until_not_visible(5) == None, "Popup visible"
 
 
-def test_city_select_popup_yes(web_browser):
-    """ Checking the "Yes" button of the city selection popup. """
+def test_city_select_popup_no(web_browser):
+    """ Checking the "No" button of the city selection popup. """
 
     page = MainPage(web_browser)
 
@@ -65,6 +66,32 @@ def test_city_select_popup_yes(web_browser):
 
     # City select form is visible
     assert page.region_input.is_visible(), "City select form not visible"
+
+
+def test_city_select_popup_not_showing_again(web_browser):
+    """ Checking that popup does not appear after the selection form is closed. """
+
+    page = MainPage(web_browser)
+
+    # checking button availability
+    page.header_city_popup_no.wait_to_be_clickable(3)
+
+    assert page.header_city_popup_no.is_clickable(), "Button is not clickable"
+
+    # clicking button
+    page.header_city_popup_no.click()
+    time.sleep(1)
+    page.wait_page_loaded()
+
+    # City select form is visible
+    assert page.region_input.is_visible(), "City select form not visible"
+
+    # Closing city select form
+    page.region_close_button.click()
+    time.sleep(1)
+    page.refresh()
+
+    assert page.header_city_popup_no.wait_until_not_visible(5) == None, "Popup visible"
 
 
 def test_city_select_input_positive(web_browser):
@@ -203,7 +230,7 @@ def test_city_selection_saved(web_browser):
     assert cty_tst_btn_txt in page.header_city_select.get_text(), "City was not selected"
 
     # checking result in basket page
-    page.get(URL_MAIN + URL_BASKET)
+    page.get(URL_MAIN+URL_BASKET)
     page.basket_page_region.wait_to_be_clickable(3)
 
     assert cty_tst_btn_txt in page.basket_page_region.get_text(), "Selected city was not saved"
