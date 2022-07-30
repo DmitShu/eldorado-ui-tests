@@ -24,7 +24,8 @@ class MainPage(WebPage):
 
 
     # "Выберите ваш город"
-    header_city_popup = WebElement(xpath = "//button[normalize-space(.)='Да, верно']")
+    header_city_popup_yes = WebElement(xpath ="//button[normalize-space(.)='Да, верно']")
+    header_city_popup_no = WebElement(xpath = "//button[normalize-space(.)='Нет, другой']")
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
@@ -83,6 +84,15 @@ class MainPage(WebPage):
     add_to_cart_button_filter = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
     add_to_cart_button_main = WebElement(xpath = "//div[@aria-labelledby]//button[normalize-space(.)='В корзину']")
     add_to_cart_price = WebElement(css_selector = 'span[data-pc="offer_price"]')
+
+    # Main
+    main_catalog_buttons = ManyWebElements(css_selector = 'ul[data-dy="catalog_menu"] li')
+    main_hero_block = ManyWebElements(css_selector = 'div[data-dy="hero-block"] picture img')
+    main_recommend_tabs = ManyWebElements(css_selector = 'div[role="tablist"] button')
+
+    main_media_tube = WebElement(xpath="//a[normalize-space(.)='ЭльдоTUBE']")
+    main_media_play = WebElement(xpath="//a[normalize-space(.)='ЭльдоPLAY']")
+    main_media_blog = WebElement(xpath="//a[normalize-space(.)='ЭльдоBLOG']")
 
 
     #____________Basket PAGE____________

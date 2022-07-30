@@ -19,9 +19,11 @@ of the page in case any test case will fail.
 [pages/helpers.py](pages/helpers.py) contains common constants and methods? used in tests.
 
 
-[tests/test_run_1_main_page.py](tests/test_run_1_main.py) contains several Web UI tests for main page elements and forms.
+[tests/test_run_1_main_page.py](tests/test_run_1_main_page.py) contains several Web UI tests for main page elements.
 
-[tests/test_run_2_basket.py](tests/test_run_2_basket.py) contains several Web UI tests for basket page elements and forms.
+[tests/test_run_2_region_select.py](tests/test_run_2_region_select.py) contains several Web UI tests for the region selection functionality.
+
+[tests/test_run_3_basket.py](tests/test_run_3_basket.py) contains several Web UI tests for basket page elements.
 
 
 How To Run Tests

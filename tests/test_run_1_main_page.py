@@ -1,5 +1,5 @@
 """
-These test cases check the presence and functions of elements on the main page and some forms.
+These test cases check the presence and functions of elements on the main page.
 
 How To Run Tests
 ----------------
@@ -29,55 +29,7 @@ import pytest
 import time
 
 
-def test_city_select_input_positive(web_browser):
-    """ Check header element "Выберите ваш город", input real city """
-
-    page = MainPage(web_browser)
-    page.header_city_select.click()
-    page.region_input.wait_to_be_clickable(5)
-
-    assert page.region_input.is_visible(), "City select form not visible"
-
-    page.region_input.send_keys(CITY_P_1, 0.5)
-    page.region_option.click()
-    page.wait_page_loaded()
-
-    assert CITY_P_1 in page.header_city_select.get_text(), "City was not selected"
-
-
-def test_city_select_input_negative(web_browser):
-    """ Check header element "Выберите ваш город", input bad data """
-
-    page = MainPage(web_browser)
-    page.header_city_select.click()
-    page.region_input.wait_to_be_clickable(5)
-
-    assert page.region_input.is_visible(), "City select form not visible"
-
-    page.region_input.send_keys(CITY_N_1, 0.5)
-    page.region_option.click()
-    page.wait_page_loaded()
-
-    assert CITY_BAD_MESSAGE in page.region_option.get_text(), "Now invalid input message"
-
-
-def test_city_select_by_button(web_browser):
-    """ Check header element "Выберите ваш город", select city button """
-
-    page = MainPage(web_browser)
-    page.header_city_select.click()
-    page.region_input.wait_to_be_clickable(5)
-
-    assert page.region_input.is_visible(), "City select form not visible"
-
-    # Select and click random button
-    cty_tst_btn = r.choice(page.region_city_buttons.find())
-    cty_tst_btn_txt = cty_tst_btn.text
-    cty_tst_btn.click()
-    page.wait_page_loaded()
-    page.header_city_select.wait_to_be_clickable()
-
-    assert cty_tst_btn_txt in page.header_city_select.get_text(), "City was not selected"
+# Header elements testing
 
 
 def test_click_header_club(web_browser):
@@ -234,3 +186,114 @@ def test_click_header_basket(web_browser):
     page.wait_page_loaded()
 
     assert URL_BASKET in page.get_current_url(), "Not a basket page"
+
+
+# Main section testing
+
+
+def test_main_catalog_menu_available(web_browser):
+    """ Check main menu catalog shown and not empty """
+
+    page = MainPage(web_browser)
+
+    # locating main menu catalog items
+    assert page.main_catalog_buttons.count() > 0, 'Menu not found'
+    # At least one element visible
+    assert page.main_catalog_buttons.find()[0].is_displayed, 'Menu not visible'
+
+
+def test_main_hero_block_available(web_browser):
+    """ Check main page hero block shown """
+
+    page = MainPage(web_browser)
+
+    # locating main menu catalog items
+    assert page.main_hero_block.count() > 0, 'Menu not found'
+    # All items have unique pictures
+    img = page.main_hero_block.get_attribute('src')
+    img_s = set(img)
+
+    assert len(img) == len(img_s), 'Some items missing or duplicated'
+
+
+def test_main_recommend_tabs_available(web_browser):
+    """ Check main page contains recommendation tabs """
+
+    page = MainPage(web_browser)
+
+    # at least 3 tabs shown
+    rec_tabs_cnt = page.main_recommend_tabs.count()
+    rec_tabs = page.main_recommend_tabs.find()
+
+    assert  rec_tabs_cnt >= 3, 'Recommendation tabs not found'
+
+    # checking individual tabs
+    for i in range(rec_tabs_cnt):
+        page.add_to_cart_button_main.scroll_to_element()
+        rec_tabs[i].click()
+        page.add_to_cart_button_main.scroll_to_element()
+        page.add_to_cart_button_main.wait_to_be_clickable(3)
+        time.sleep(1)
+
+        assert page.add_to_cart_button_main.is_clickable(), 'There are no items in the recommendation tab'
+
+
+def test_main_media_block_tube_available(web_browser):
+    """ Check main page "ЭльдоTUBE" element """
+
+    # finding and clicking button
+    page = MainPage(web_browser)
+    page.main_media_tube.scroll_to_element()
+    page.main_media_tube.click()
+    page.wait_page_loaded()
+
+    # Link should open in a new tab
+    assert URL_TUBE not in page.get_current_url(), "Same tab"
+
+    page.switch_tab()
+    page.wait_page_loaded()
+
+    # checking current page URL
+    assert URL_TUBE in page.get_current_url(), "Wrong URL"
+
+
+def test_main_media_block_play_available(web_browser):
+    """ Check main page "ЭльдоPLAY" element """
+
+    # finding and clicking button
+    page = MainPage(web_browser)
+    page.main_media_play.scroll_to_element()
+    page.main_media_play.click()
+    page.wait_page_loaded()
+
+    # Link should open in a new tab
+    assert URL_PLAY not in page.get_current_url(), "Same tab"
+
+    page.switch_tab()
+    page.wait_page_loaded()
+
+    # checking current page URL
+    assert URL_PLAY in page.get_current_url(), "Wrong URL"
+
+
+def test_main_media_block_blog_available(web_browser):
+    """ Check main page "ЭльдоBLOG" element """
+
+    # finding and clicking button
+    page = MainPage(web_browser)
+    page.main_media_blog.scroll_to_element()
+    page.main_media_blog.click()
+    page.wait_page_loaded()
+
+    # Link should open in a new tab
+    assert URL_BLOG not in page.get_current_url(), "Same tab"
+
+    page.switch_tab()
+    page.wait_page_loaded()
+
+    # checking current page URL
+    assert URL_BLOG in page.get_current_url(), "Wrong URL"
+
+
+
+

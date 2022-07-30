@@ -10,7 +10,7 @@ import time
 # common constants, used in tests
 
 
-# URL'S
+#Main URL'S
 URL_MAIN = 'https://www.eldorado.ru'
 URL_CLUB = '/club/'
 URL_SHOPS = '/info/shops/'
@@ -20,6 +20,11 @@ URL_BLOG = 'https://blog.eldorado.ru/'
 URL_B2B = '/b2b/'
 URL_BASKET = '/personal/basket.php'
 URL_ORDER = '/personal/order_self_delivery.php'
+# ЭльдоTUBE
+URL_TUBE = 'https://www.youtube.com/c/eldoradovideo/videos'
+# ЭльдоPLAY
+URL_PLAY = 'https://blog.eldorado.ru/publications/category/eldoplay'
+
 # холодильники
 URL_CATEGORY_1 = '/c/kholodilniki'
 # утюги
@@ -108,4 +113,3 @@ def prec_basket_cook(page):
     page.get(URL_MAIN + URL_BASKET)
     page.load_cookies()
     page.wait_page_loaded()
-
