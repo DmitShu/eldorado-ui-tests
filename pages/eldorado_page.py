@@ -24,13 +24,17 @@ class MainPage(WebPage):
 
 
     # "Выберите ваш город"
-    header_city_popup_yes = WebElement(xpath ="//button[normalize-space(.)='Да, верно']")
+    header_city_popup_yes = WebElement(xpath = "//button[normalize-space(.)='Да, верно']")
     header_city_popup_no = WebElement(xpath = "//button[normalize-space(.)='Нет, другой']")
     header_city_select = WebElement(css_selector = "#__next div div header button")
     region_input = WebElement(css_selector = "input[name = 'region-search']")
     region_option = WebElement(css_selector = "div[role='listbox'] span")
     region_city_buttons = ManyWebElements(css_selector = "div[role='dialog'] span[role='button']")
     region_close_button = WebElement(css_selector = 'button[aria-label="Закрыть"]')
+
+    region_list_1_select = WebElement(xpath = "//span[normalize-space(.)='"+REGION_LIST_1+"']")
+    region_list_2_select = WebElement(xpath="//span[normalize-space(.)='"+REGION_LIST_2+"']")
+    region_list_3_select = WebElement(xpath="//span[normalize-space(.)='"+REGION_LIST_3+"']")
 
     # "Эльдорадости"
     header_club = WebElement(xpath = "//a[@href='" + URL_CLUB + "']")
@@ -84,6 +88,8 @@ class MainPage(WebPage):
     add_to_cart_button_filter = WebElement(xpath = "//button[normalize-space(.)='Добавить в корзину']")
     add_to_cart_button_main = WebElement(xpath = "//div[@aria-labelledby]//button[normalize-space(.)='В корзину']")
     add_to_cart_price = WebElement(css_selector = 'span[data-pc="offer_price"]')
+
+    basket_page_region = WebElement(css_selector = 'span.headerRegionName')
 
     # Main
     main_catalog_buttons = ManyWebElements(css_selector = 'ul[data-dy="catalog_menu"] li')

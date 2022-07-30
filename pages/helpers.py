@@ -31,11 +31,19 @@ URL_CATEGORY_1 = '/c/kholodilniki'
 URL_CATEGORY_2 = '/c/utyugi'
 
 
-# Header city form
+# Region select form
 CITY_P_1 = 'Ярославль'
+CITY_P_1_SUGGEST = 'Яросл'
+CITY_P_1_ENG = 'Zhjckfdkm'
 CITY_N_1 = '12345'
+CITY_N_2 = 257*'A'
+CITY_N_3 = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
+
 CITY_BAD_MESSAGE = 'Ничего не найдено'
 
+REGION_LIST_1 = 'Сибирский ФО'
+REGION_LIST_2 = 'Иркутская область'
+REGION_LIST_3 = 'Иркутск'
 
 # Header orders form
 ORDER_TEL_P_1 = '9666666666'
