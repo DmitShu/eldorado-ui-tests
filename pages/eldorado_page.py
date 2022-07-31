@@ -76,9 +76,13 @@ class MainPage(WebPage):
 
     # Search-form
     header_search_input = WebElement(css_selector = 'input[name="search"]')
+    header_search_button = WebElement(css_selector = 'form[id="search-form"] button[type="submit"]')
+
     header_search_item_1 = WebElement(xpath = "//a[normalize-space(.)='" + SEARCH_ITEM_1 + "']")
     header_search_item_2 = WebElement(xpath = "//a[normalize-space(.)='" + SEARCH_ITEM_2 + "']")
 
+    # Search results
+    search_result_products = ManyWebElements(css_selector = 'div[id="listing-container"] li[data-dy="product"]')
 
     # "Корзина"
     header_basket_button = WebElement(xpath = "//a[@href='" + URL_BASKET + "']")

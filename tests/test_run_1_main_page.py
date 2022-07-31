@@ -76,7 +76,7 @@ def test_click_header_pvz(web_browser):
 
     assert URL_PVZ in page.get_current_url(), "Wrong URL"
 
-@pytest.mark.skip(reason="Valid order num + phone needed")
+@pytest.mark.xfail(reason="Valid order num + phone needed")
 def test_click_header_orders_valid_data(web_browser):
     """ Check header element "Статус заказа", click, valid data """
 
@@ -89,9 +89,12 @@ def test_click_header_orders_valid_data(web_browser):
     page.orders_form_input_order = ORDER_P_1
     page.orders_form_input_phone = ORDER_TEL_P_1
     page.orders_form_submit_button.click()
+    page.wait_page_loaded()
+
+    # checking redirection to personal orders
     messages = page.orders_form_messages.get_text()
 
-    assert ORDER_TEL_BAD_MESSAGE not in messages, ORDER_TEL_BAD_MESSAGE + '" on form'
+    assert URL_ORDERS in page.get_current_url(), "Orders pages not opened"
 
 
 def test_click_header_orders_empty_fields(web_browser):
@@ -104,6 +107,7 @@ def test_click_header_orders_empty_fields(web_browser):
     assert page.orders_form_submit_button.is_clickable(), 'No "Статус заказа" form'
 
     page.orders_form_submit_button.click()
+    time.sleep(1)
     messages = page.orders_form_messages.get_text()
 
     assert ORDER_TEL_EMPTY in messages, 'No "' + ORDER_TEL_EMPTY + '" on form'
@@ -122,6 +126,7 @@ def test_click_header_orders_invalid_phone(web_browser):
     page.orders_form_input_order = ORDER_P_1
     page.orders_form_input_phone = ORDER_TEL_N_1
     page.orders_form_submit_button.click()
+    time.sleep(1)
     messages = page.orders_form_messages.get_text()
 
     assert ORDER_TEL_BAD_MESSAGE in messages, 'No "' + ORDER_TEL_BAD_MESSAGE + '" on form'

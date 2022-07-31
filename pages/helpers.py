@@ -57,6 +57,7 @@ ORDER_EMPTY_MSG = 'Введите номер заказа'
 # Search
 SEARCH_ITEM_1 = 'Холодильники'
 SEARCH_ITEM_2 = 'Утюги'
+SEARCH_ITEM_3 = 'realme'
 
 
 # Basket item count (max 999 allowed)
@@ -112,7 +113,6 @@ def select_city(page):
     page.region_input.wait_to_be_clickable(5)
     page.region_city_buttons.find()[0].click()
     time.sleep(1)
-    page.wait_page_loaded()
 
 
 def prec_basket_cook(page):
