@@ -135,7 +135,7 @@ def test_search_input_invalid_data(web_browser, search):
 
 
 def test_sorting_by_price(web_browser):
-    """ Check sorting by price button. """
+    """ Check sorting by price button min to max. """
 
     page = MainPage(web_browser)
     # preparing page for testing
@@ -150,10 +150,19 @@ def test_sorting_by_price(web_browser):
     all_prices = [get_price(i) for i in all_prices]
 
     # Make sure products are sorted by price correctly:
-    assert all_prices == sorted(all_prices), "Sort by price doesn't work!"
+    assert all_prices == sorted(all_prices), "Sort by price (min to max) doesn't work!"
 
-    # sorting by price (from max to min)
-    page.search_result_sort_price.scroll_to_element()
+
+def test_sorting_by_price_reverse(web_browser):
+    """ Check sorting by price button max to min. """
+
+    page = MainPage(web_browser)
+    # preparing page for testing
+    filter_preconditions(page)
+
+    # sorting by price (from min to max)
+    page.search_result_sort_price.click()
+    time.sleep(1)
     page.search_result_sort_price.click()
     page.wait_page_loaded()
 
@@ -162,7 +171,7 @@ def test_sorting_by_price(web_browser):
     all_prices = [get_price(i) for i in all_prices]
 
     # Make sure products are sorted by price correctly:
-    assert all_prices == sorted(all_prices, reverse=True), "Reverse sort by price doesn't work!"
+    assert all_prices == sorted(all_prices, reverse=True), "Sort by price (max to min) doesn't work!"
 
 
 def test_sorting_by_rating(web_browser):
@@ -250,6 +259,116 @@ def test_sorting_by_date(web_browser):
     assert all_prices_1 != all_prices_2, 'Sort by date not working!'
 
 
+def test_sorting_by_min_price(web_browser):
+    """ Check sorting by minimum price available. """
+
+    page = MainPage(web_browser)
+    # preparing page for testing
+    filter_preconditions(page)
+
+    # finding minimum price
+    price_min = page.search_result_input_min_price.get_attribute('placeholder')
+
+    # transferring min price to max price input
+    page.search_result_input_max_price.click()
+    time.sleep(1)
+    page.search_result_input_max_price=price_min
+    time.sleep(1)
+    page.search_result_input_apply_button.click()
+    page.wait_page_loaded()
+
+    # checking result
+    all_prices = page.search_result_prices.get_text()
+
+    assert len(all_prices) > 0, 'No items found'
+
+    # Make sure products are sorted by price correctly:
+    price_min = get_price(price_min)
+    price = get_price(all_prices[0])
+
+    assert price == price_min, "Sort by min price doesn't work!"
+
+
+def test_sorting_by_max_price(web_browser):
+    """ Check sorting by maximum price available. """
+
+    page = MainPage(web_browser)
+    # preparing page for testing
+    filter_preconditions(page)
+
+    # finding maximum price
+    price_max = page.search_result_input_max_price.get_attribute('placeholder')
+
+    # transferring max price to min price input
+    page.search_result_input_min_price.click()
+    time.sleep(1)
+    page.search_result_input_min_price=price_max
+    time.sleep(1)
+    page.search_result_input_apply_button.click()
+    page.wait_page_loaded()
+
+    # checking result
+    all_prices = page.search_result_prices.get_text()
+
+    assert len(all_prices) > 0, 'No items found'
+
+    # Make sure products are sorted by price correctly:
+    price_max = get_price(price_max)
+    price = get_price(all_prices[0])
+
+    assert price == price_max, "Sort by max price doesn't work!"
+
+
+def test_sorting_by_min_price_out_of_range(web_browser):
+    """ Check sorting by minimum price if input is out of range. """
+
+    page = MainPage(web_browser)
+    # preparing page for testing
+    filter_preconditions(page)
+
+    # finding minimum and maximum prices
+    price_min = get_price(page.search_result_input_min_price.get_attribute('placeholder'))
+
+    # testing input with price < price_min
+    price = str(price_min - 1)
+    page.search_result_input_min_price.click()
+    time.sleep(1)
+    page.search_result_input_min_price=price
+    time.sleep(1)
+    page.search_result_input_apply_button.click()
+    page.wait_page_loaded()
+
+    # checking result
+    price_min_new = get_price(page.search_result_input_min_price.get_attribute('placeholder'))
+
+    assert price_min_new == price_min, 'Min price was not reset to default'
+
+
+def test_sorting_by_max_price_out_of_range(web_browser):
+    """ Check sorting by minimum price if input is out of range. """
+
+    page = MainPage(web_browser)
+    # preparing page for testing
+    filter_preconditions(page)
+
+    # finding minimum and maximum prices
+    price_max = get_price(page.search_result_input_max_price.get_attribute('placeholder'))
+
+    # testing input with price < price_min
+    price = str(price_max + 1)
+    page.search_result_input_max_price.click()
+    time.sleep(1)
+    page.search_result_input_max_price=price
+    time.sleep(1)
+    page.search_result_input_apply_button.click()
+    page.wait_page_loaded()
+
+    # checking result
+    price_max_new = get_price(page.search_result_input_max_price.get_attribute('placeholder'))
+
+    assert price_max_new == price_max, 'Max price was not reset to default'
+
+
 # Search result filtering tests
 
 
@@ -274,4 +393,3 @@ def test_filtering_by_vendor(web_browser):
     for item in page.search_result_products.get_text():
         msg = 'Wrong product in search "{}"'.format(item)
         assert SEARCH_ITEM_1_VENDOR.lower() in item.lower(), msg
-

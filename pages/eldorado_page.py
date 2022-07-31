@@ -1,6 +1,6 @@
 """
 
-"Эльдорадо" page elements and additional functions
+Contains class to define web elements on testing page (Эльдорадо)
 
 """
 
@@ -51,7 +51,7 @@ class MainPage(WebPage):
     # "Статус заказа" form elements
     orders_form_input_order = WebElement(css_selector = 'form input[name="name"]')
     orders_form_input_phone = WebElement(css_selector = 'form div:nth-child(3) input')
-    orders_form_submit_button = WebElement(css_selector = 'form > button[type="submit"]')
+    orders_form_submit_button = WebElement(css_selector = 'form button[type="submit"]')
     orders_form_messages = ManyWebElements(css_selector = 'div[role="dialog"] form div span')
 
     # "Эльдоблог"
@@ -87,6 +87,10 @@ class MainPage(WebPage):
     search_result_prices_old = ManyWebElements(xpath = "//span[@data-pc='offer_price']/following-sibling::div/span")
     search_result_ratings = ManyWebElements(xpath = "//li[@data-dy='product']//div[contains(@aria-label,'Рейтинг')]//span")
     search_result_reviews = ManyWebElements(xpath = "//li[@data-dy='product']//a[@data-dy='review']")
+
+    search_result_input_min_price = WebElement(xpath = "//label[normalize-space(.)='от']/following-sibling::input")
+    search_result_input_max_price = WebElement(xpath = "//label[normalize-space(.)='до']/following-sibling::input")
+    search_result_input_apply_button = WebElement(xpath = "//button[normalize-space(.)='Применить']")
 
     search_result_sort_price = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По цене']")
     search_result_sort_rating = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По рейтингу']")

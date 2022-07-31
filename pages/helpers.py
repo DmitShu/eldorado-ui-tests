@@ -87,7 +87,7 @@ def get_price(some_text):
 
     price = 0
     try:
-        price = float(some_text.split('р')[0].replace(' ', ''))
+        price = int(some_text.split('р')[0].replace(' ', ''))
     except:
         # nothing to do, returning 0
         pass

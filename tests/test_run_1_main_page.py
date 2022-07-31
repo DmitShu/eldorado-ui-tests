@@ -298,7 +298,3 @@ def test_main_media_block_blog_available(web_browser):
 
     # checking current page URL
     assert URL_BLOG in page.get_current_url(), "Wrong URL"
-
-
-
-
