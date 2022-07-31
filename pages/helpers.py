@@ -35,9 +35,10 @@ URL_CATEGORY_2 = '/c/utyugi'
 CITY_P_1 = 'Ярославль'
 CITY_P_1_SUGGEST = 'Яросл'
 CITY_P_1_ENG = 'Zhjckfdkm'
-CITY_N_1 = '12345'
-CITY_N_2 = 257*'A'
-CITY_N_3 = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
+
+DATA_N_1 = '123459'
+DATA_N_2 = 257 * 'A'
+DATA_N_3 = '|\\/!@#$%^&*()-_=+`~?"№;:[]{}'
 
 CITY_BAD_MESSAGE = 'Ничего не найдено'
 
@@ -54,10 +55,15 @@ ORDER_TEL_EMPTY = 'Мобильный телефон не указан'
 ORDER_EMPTY_MSG = 'Введите номер заказа'
 
 
-# Search
+# Search & filters
 SEARCH_ITEM_1 = 'Холодильники'
+SEARCH_ITEM_1_SUG = 'холод'
+SEARCH_ITEM_1_VENDOR = 'Bosch'
 SEARCH_ITEM_2 = 'Утюги'
 SEARCH_ITEM_3 = 'realme'
+SEARCH_ITEM_4 = 'унитаз'
+SEARCH_ITEM_4_eng = 'eybnfp'
+SEARCH_EMPTY_MESSAGE = 'ничего не найдено'
 
 
 # Basket item count (max 999 allowed)
@@ -115,9 +121,16 @@ def select_city(page):
     time.sleep(1)
 
 
-def prec_basket_cook(page):
-    """ for fast testing only / not reliable / cart stored on server """
+def filter_preconditions(page):
+    """ This method prepares page for filtering. """
 
-    page.get(URL_MAIN + URL_BASKET)
-    page.load_cookies()
+    select_city(page)
+    page.header_search_input.wait_to_be_clickable()
+    page.header_search_input.click()
+    page.header_search_input.wait_to_be_clickable()
+    page.header_search_input = SEARCH_ITEM_1
+    page.header_search_item_1.wait_to_be_clickable()
+    page.header_search_item_1.click()
     page.wait_page_loaded()
+
+    assert page.search_result_products.count() > 0, 'Preconditions fail. Nothing to filter'

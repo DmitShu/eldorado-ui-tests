@@ -144,12 +144,12 @@ def test_city_select_input_eng_layout(web_browser):
     assert CITY_P_1 in page.region_option.get_text(), "Wrong keyboard layout suggestion not working"
 
 
-@pytest.mark.parametrize("city",  [CITY_N_1,
-                                   CITY_N_2,
-                                   CITY_N_3,],
-                            ids=  [CITY_N_1,
-                                   CITY_N_2,
-                                   CITY_N_3],)
+@pytest.mark.parametrize("city", [DATA_N_1,
+                                  DATA_N_2,
+                                  DATA_N_3],
+                         ids=    [DATA_N_1,
+                                  DATA_N_2,
+                                  DATA_N_3])
 def test_city_select_input_negative(web_browser, city):
     """ Check "Выберите ваш город", input bad data """
 

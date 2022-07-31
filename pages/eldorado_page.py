@@ -33,8 +33,8 @@ class MainPage(WebPage):
     region_close_button = WebElement(css_selector = 'button[aria-label="Закрыть"]')
 
     region_list_1_select = WebElement(xpath = "//span[normalize-space(.)='"+REGION_LIST_1+"']")
-    region_list_2_select = WebElement(xpath="//span[normalize-space(.)='"+REGION_LIST_2+"']")
-    region_list_3_select = WebElement(xpath="//span[normalize-space(.)='"+REGION_LIST_3+"']")
+    region_list_2_select = WebElement(xpath = "//span[normalize-space(.)='"+REGION_LIST_2+"']")
+    region_list_3_select = WebElement(xpath = "//span[normalize-space(.)='"+REGION_LIST_3+"']")
 
     # "Эльдорадости"
     header_club = WebElement(xpath = "//a[@href='" + URL_CLUB + "']")
@@ -83,6 +83,19 @@ class MainPage(WebPage):
 
     # Search results
     search_result_products = ManyWebElements(css_selector = 'div[id="listing-container"] li[data-dy="product"]')
+    search_result_prices = ManyWebElements(css_selector = 'span[data-pc="offer_price"]')
+    search_result_prices_old = ManyWebElements(xpath = "//span[@data-pc='offer_price']/following-sibling::div/span")
+    search_result_ratings = ManyWebElements(xpath = "//li[@data-dy='product']//div[contains(@aria-label,'Рейтинг')]//span")
+    search_result_reviews = ManyWebElements(xpath = "//li[@data-dy='product']//a[@data-dy='review']")
+
+    search_result_sort_price = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По цене']")
+    search_result_sort_rating = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По рейтингу']")
+    search_result_sort_review = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По отзывам']")
+    search_result_sort_discount = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По размеру скидки']")
+    search_result_sort_date = WebElement(xpath = "//div[@id='listing-container']//button[normalize-space(.)='По новизне']")
+
+    search_result_sort_vendors_btn = WebElement(xpath = "(//*[contains(text(), 'Производители')]/ancestor-or-self::*/DIV[contains(text(), 'Показать')])")
+    search_result_sort_vendor_1 = WebElement(css_selector = 'span[title="Bosch"]')
 
     # "Корзина"
     header_basket_button = WebElement(xpath = "//a[@href='" + URL_BASKET + "']")
@@ -96,13 +109,14 @@ class MainPage(WebPage):
     basket_page_region = WebElement(css_selector = 'span.headerRegionName')
 
     # Main
+    main_section = WebElement(css_selector = 'main')
     main_catalog_buttons = ManyWebElements(css_selector = 'ul[data-dy="catalog_menu"] li')
     main_hero_block = ManyWebElements(css_selector = 'div[data-dy="hero-block"] picture img')
     main_recommend_tabs = ManyWebElements(css_selector = 'div[role="tablist"] button')
 
-    main_media_tube = WebElement(xpath="//a[normalize-space(.)='ЭльдоTUBE']")
-    main_media_play = WebElement(xpath="//a[normalize-space(.)='ЭльдоPLAY']")
-    main_media_blog = WebElement(xpath="//a[normalize-space(.)='ЭльдоBLOG']")
+    main_media_tube = WebElement(xpath = "//a[normalize-space(.)='ЭльдоTUBE']")
+    main_media_play = WebElement(xpath = "//a[normalize-space(.)='ЭльдоPLAY']")
+    main_media_blog = WebElement(xpath = "//a[normalize-space(.)='ЭльдоBLOG']")
 
 
     #____________Basket PAGE____________
